@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using VueCliMiddleware;
 using BettingApp.Data;
 using Microsoft.EntityFrameworkCore;
+using BettingApp.Repositories;
 
 namespace betting_app
 {
@@ -32,6 +33,9 @@ namespace betting_app
             {
                 configuration.RootPath = "ClientApp";
             });
+
+            // Transient lifetime services are created each time they're requested from the service container
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             // TODO: add to Configuration
             string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=sql_server_password";
