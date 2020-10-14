@@ -1,4 +1,5 @@
-﻿using BettingApp.Models;
+﻿using System.Linq;
+using BettingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BettingApp.Data
@@ -13,7 +14,6 @@ namespace BettingApp.Data
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Fixture> Fixtures { get; set; }
         public DbSet<Offer> Offers { get; set; }
-        public DbSet<Result> Results { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
@@ -25,11 +25,20 @@ namespace BettingApp.Data
             modelBuilder.Entity<Competition>().ToTable("Competition");
             modelBuilder.Entity<Fixture>().ToTable("Fixture");
             modelBuilder.Entity<Offer>().ToTable("Offer");
-            modelBuilder.Entity<Result>().ToTable("Result");
             modelBuilder.Entity<Sport>().ToTable("Sport");
             modelBuilder.Entity<Team>().ToTable("Team");
             modelBuilder.Entity<Ticket>().ToTable("Ticket");
             modelBuilder.Entity<Wallet>().ToTable("Wallet");
+
+            // TODO: temp fix, do this for each model separately
+            var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

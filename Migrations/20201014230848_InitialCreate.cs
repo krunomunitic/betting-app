@@ -23,20 +23,6 @@ namespace BettingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Result",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Home = table.Column<int>(nullable: false),
-                    Away = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Result", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sport",
                 columns: table => new
                 {
@@ -104,7 +90,7 @@ namespace BettingApp.Migrations
                         column: x => x.SportId,
                         principalTable: "Sport",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,38 +100,37 @@ namespace BettingApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
+                    Result = table.Column<string>(nullable: true),
                     HomeTeamId = table.Column<int>(nullable: false),
                     AwayTeamId = table.Column<int>(nullable: false),
-                    TeamId = table.Column<int>(nullable: true),
                     CompetitionId = table.Column<int>(nullable: false),
-                    OfferId = table.Column<int>(nullable: false),
-                    ResultId = table.Column<int>(nullable: false)
+                    OfferId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fixture", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Fixture_Team_AwayTeamId",
+                        column: x => x.AwayTeamId,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Fixture_Competition_CompetitionId",
                         column: x => x.CompetitionId,
                         principalTable: "Competition",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Fixture_Team_HomeTeamId",
+                        column: x => x.HomeTeamId,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Fixture_Offer_OfferId",
                         column: x => x.OfferId,
                         principalTable: "Offer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Fixture_Result_ResultId",
-                        column: x => x.ResultId,
-                        principalTable: "Result",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Fixture_Team_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -168,7 +153,7 @@ namespace BettingApp.Migrations
                         column: x => x.FixtureId,
                         principalTable: "Fixture",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bet_Ticket_TicketId",
                         column: x => x.TicketId,
@@ -193,24 +178,24 @@ namespace BettingApp.Migrations
                 column: "SportId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Fixture_AwayTeamId",
+                table: "Fixture",
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Fixture_CompetitionId",
                 table: "Fixture",
                 column: "CompetitionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Fixture_HomeTeamId",
+                table: "Fixture",
+                column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Fixture_OfferId",
                 table: "Fixture",
                 column: "OfferId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fixture_ResultId",
-                table: "Fixture",
-                column: "ResultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fixture_TeamId",
-                table: "Fixture",
-                column: "TeamId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -228,16 +213,13 @@ namespace BettingApp.Migrations
                 name: "Ticket");
 
             migrationBuilder.DropTable(
+                name: "Team");
+
+            migrationBuilder.DropTable(
                 name: "Competition");
 
             migrationBuilder.DropTable(
                 name: "Offer");
-
-            migrationBuilder.DropTable(
-                name: "Result");
-
-            migrationBuilder.DropTable(
-                name: "Team");
 
             migrationBuilder.DropTable(
                 name: "Sport");

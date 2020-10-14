@@ -86,21 +86,18 @@ namespace BettingApp.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ResultId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
+                    b.Property<string>("Result")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AwayTeamId");
+
                     b.HasIndex("CompetitionId");
 
+                    b.HasIndex("HomeTeamId");
+
                     b.HasIndex("OfferId");
-
-                    b.HasIndex("ResultId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Fixture");
                 });
@@ -124,24 +121,6 @@ namespace BettingApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Offer");
-                });
-
-            modelBuilder.Entity("BettingApp.Models.Result", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Away")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Home")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Result");
                 });
 
             modelBuilder.Entity("BettingApp.Models.Sport", b =>
@@ -206,7 +185,7 @@ namespace BettingApp.Migrations
                     b.HasOne("BettingApp.Models.Fixture", "Fixture")
                         .WithMany()
                         .HasForeignKey("FixtureId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BettingApp.Models.Ticket", null)
@@ -219,33 +198,35 @@ namespace BettingApp.Migrations
                     b.HasOne("BettingApp.Models.Sport", "Sport")
                         .WithMany()
                         .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BettingApp.Models.Fixture", b =>
                 {
+                    b.HasOne("BettingApp.Models.Team", "AwayTeam")
+                        .WithMany()
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BettingApp.Models.Competition", "Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BettingApp.Models.Team", "HomeTeam")
+                        .WithMany()
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BettingApp.Models.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("BettingApp.Models.Result", "Result")
-                        .WithMany()
-                        .HasForeignKey("ResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BettingApp.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId");
                 });
 #pragma warning restore 612, 618
         }

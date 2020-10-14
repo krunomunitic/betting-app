@@ -22,6 +22,7 @@ namespace betting_app
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+
                 try
                 {
                     var context = services.GetRequiredService<BettingAppContext>();
