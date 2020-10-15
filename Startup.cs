@@ -38,6 +38,8 @@ namespace betting_app
             // Transient lifetime services are created each time they're requested from the service container
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IFixtureRepository, FixtureRepository>();
+            services.AddTransient<ICompetitionRepository, CompetitionRepository>();
+            services.AddTransient<IWalletRepository, WalletRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // TODO: add to Configuration

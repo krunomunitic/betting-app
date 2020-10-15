@@ -21,7 +21,9 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var fixtures = _unitOfWork.Fixtures.GetAll();
+            // TODO: add new method to repo Fixtures with defined DTO
+            // remove from here, controller can't know about data model
+            var fixtures = _unitOfWork.Fixtures.GetComplex(includeProperties: "HomeTeam,AwayTeam,Competition,Offer");
             return Ok(fixtures);
         }
     }

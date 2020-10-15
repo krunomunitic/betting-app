@@ -2,7 +2,7 @@
 
 namespace BettingApp.Repositories
 {
-    public interface IFixtureRepository : IGenericRepository<Fixture>
+    public interface ICompetitionRepository : IGenericRepository<Competition>
     {
     }
 }
