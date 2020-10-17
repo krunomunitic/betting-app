@@ -40,6 +40,8 @@ namespace betting_app
             services.AddTransient<IFixtureRepository, FixtureRepository>();
             services.AddTransient<ICompetitionRepository, CompetitionRepository>();
             services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IBetRepository, BetRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // TODO: add to Configuration

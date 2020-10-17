@@ -53,7 +53,8 @@ namespace BettingApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Stake = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

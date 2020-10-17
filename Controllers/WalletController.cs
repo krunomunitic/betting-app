@@ -28,10 +28,10 @@ namespace BettingApp.Controllers
 
         // TODO: refactor this (first or default...)
         [HttpPost]
-        public ActionResult Submit(int balance)
+        public ActionResult Submit(int Balance)
         {
             var wallet = _unitOfWork.Wallet.FindById(1);
-            wallet.Balance = balance;
+            wallet.Balance = Balance;
             _unitOfWork.Wallet.Update(wallet);
             _unitOfWork.Complete();
 

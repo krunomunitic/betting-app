@@ -160,6 +160,9 @@ namespace BettingApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Stake")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Ticket");
