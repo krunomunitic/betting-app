@@ -21,10 +21,29 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            // TODO: add new method to repo Fixtures with defined DTO
-            // remove from here, controller can't know about data model
-            var fixtures = _unitOfWork.Fixtures.GetComplex(includeProperties: "HomeTeam,AwayTeam,Competition,Offer");
-            return Ok(fixtures);
+            var fixtures = _unitOfWork.Fixtures.GetAllFixtures();
+
+            // TODO: create a service for this or
+            // do this in repository with Dto model
+            var formatted = fixtures.GroupBy(f => f.Competition)
+                .ToDictionary(c => c.Key.Name, c => c.Select(c => new
+                {
+                    id = c.Id,
+                    date = c.Date,
+                    homeTeamId = c.HomeTeamId,
+                    homeTeamName = c.HomeTeam.Name,
+                    awayTeamId = c.AwayTeamId,
+                    awayTeamName = c.AwayTeam.Name,
+                    offer = new
+                    {
+                        home = c.Offer.Home,
+                        draw = c.Offer.Draw,
+                        away = c.Offer.Away
+                    },
+                    result = c.Result,
+                }));
+
+            return Ok(formatted);
         }
     }
 }
