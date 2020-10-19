@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VueCliMiddleware;
+using BettingApp.Data;
+using Microsoft.EntityFrameworkCore;
+using BettingApp.Repositories;
+using BettingApp.UnitOfWork;
 
 namespace betting_app
 {
@@ -30,6 +34,19 @@ namespace betting_app
             {
                 configuration.RootPath = "ClientApp";
             });
+
+            // Transient lifetime services are created each time they're requested from the service container
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IFixtureRepository, FixtureRepository>();
+            services.AddTransient<ICompetitionRepository, CompetitionRepository>();
+            services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IBetRepository, BetRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            // TODO: add to Configuration
+            string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=MyStron0Passw6rd";
+            services.AddDbContext<BettingAppContext>(options => options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
