@@ -21,25 +21,30 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var fixtures = _unitOfWork.Fixtures.GetAllFixtures();
+            var allFixtures = _unitOfWork.Fixtures.GetAllFixtures();
 
             // TODO: create a service for this or
             // do this in repository with Dto model
-            var formatted = fixtures.GroupBy(f => f.Competition)
-                .ToDictionary(c => c.Key.Name, c => c.Select(c => new
+            var formatted = allFixtures.GroupBy(f => f.Competition)
+                .Select(c => new
                 {
-                    id = c.Id,
-                    date = c.Date,
-                    homeTeamId = c.HomeTeamId,
-                    homeTeamName = c.HomeTeam.Name,
-                    awayTeamId = c.AwayTeamId,
-                    awayTeamName = c.AwayTeam.Name,
-                    odds = c.FixtureOdds.Select(fo => new
+                    competitionName = c.Key.Name,
+                    fixtures = c.Select(f => new
                     {
-                        name = fo.Odds.Name, value = fo.Odds.Value
-                    }).ToList(),
-                    result = c.Result,
-                }));
+                        id = f.Id,
+                        date = f.Date,
+                        homeTeamId = f.HomeTeamId,
+                        homeTeamName = f.HomeTeam.Name,
+                        awayTeamId = f.AwayTeamId,
+                        awayTeamName = f.AwayTeam.Name,
+                        odds = f.FixtureOdds.Select(fo => new
+                        {
+                            name = fo.Odds.Name,
+                            value = fo.Odds.Value
+                        }).ToList(),
+                        result = f.Result,
+                    }).ToList()
+                }).ToList();
 
             return Ok(formatted);
         }

@@ -135,7 +135,7 @@ namespace BettingApp.Data
             int startIndex = 0;
             foreach (Fixture fixture in fixtures)
             {
-                for (int i = startIndex; i < startIndex + 6; i++, startIndex++)
+                for (int i = startIndex; i < startIndex + 6; i++)
                 {
                     if (startIndex == 16) continue;
                     if (startIndex == 18) continue;
@@ -148,6 +148,8 @@ namespace BettingApp.Data
 
                     context.FixtureOdds.Add(fixtureOdds);
                 }
+
+                startIndex += 6;
             }
             context.SaveChanges();
         }
