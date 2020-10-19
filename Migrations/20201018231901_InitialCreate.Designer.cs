@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BettingApp.Migrations
 {
     [DbContext(typeof(BettingAppContext))]
-    [Migration("20201016230245_InitialCreate")]
+    [Migration("20201018231901_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace BettingApp.Migrations
                     b.Property<int>("FixtureId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Outcome")
+                    b.Property<int>("OddsId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TicketId")
@@ -40,6 +40,8 @@ namespace BettingApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FixtureId");
+
+                    b.HasIndex("OddsId");
 
                     b.HasIndex("TicketId");
 
@@ -85,11 +87,13 @@ namespace BettingApp.Migrations
                     b.Property<int>("HomeTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OfferId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Result")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Special")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -99,30 +103,40 @@ namespace BettingApp.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.HasIndex("OfferId");
-
                     b.ToTable("Fixture");
                 });
 
-            modelBuilder.Entity("BettingApp.Models.Offer", b =>
+            modelBuilder.Entity("BettingApp.Models.FixtureOdds", b =>
+                {
+                    b.Property<int>("FixtureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OddsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FixtureId", "OddsId");
+
+                    b.HasIndex("OddsId");
+
+                    b.ToTable("FixtureOdds");
+                });
+
+            modelBuilder.Entity("BettingApp.Models.Odds", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Away")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Draw")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Home")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Value")
+                        .HasColumnType("decimal(7,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offer");
+                    b.ToTable("Odds");
                 });
 
             modelBuilder.Entity("BettingApp.Models.Sport", b =>
@@ -193,6 +207,12 @@ namespace BettingApp.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("BettingApp.Models.Odds", "Odds")
+                        .WithMany()
+                        .HasForeignKey("OddsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BettingApp.Models.Ticket", null)
                         .WithMany("Bets")
                         .HasForeignKey("TicketId");
@@ -226,10 +246,19 @@ namespace BettingApp.Migrations
                         .HasForeignKey("HomeTeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
 
-                    b.HasOne("BettingApp.Models.Offer", "Offer")
-                        .WithMany()
-                        .HasForeignKey("OfferId")
+            modelBuilder.Entity("BettingApp.Models.FixtureOdds", b =>
+                {
+                    b.HasOne("BettingApp.Models.Fixture", "Fixture")
+                        .WithMany("FixtureOdds")
+                        .HasForeignKey("FixtureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BettingApp.Models.Odds", "Odds")
+                        .WithMany("FixtureOdds")
+                        .HasForeignKey("OddsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

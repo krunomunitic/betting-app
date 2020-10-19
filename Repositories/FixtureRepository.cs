@@ -18,8 +18,9 @@ namespace BettingApp.Repositories
             return _context.Fixtures
                 .Include(f => f.AwayTeam)
                 .Include(f => f.HomeTeam)
-                .Include(f => f.Offer)
-                .Include(f => f.Competition).ToList();
+                .Include(f => f.Competition)
+                .Include(f => f.FixtureOdds).ThenInclude(fo => fo.Odds)
+                .ToList();
         }
     }
 }

@@ -8,18 +8,17 @@ namespace BettingApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Offer",
+                name: "Odds",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Home = table.Column<decimal>(nullable: false),
-                    Draw = table.Column<decimal>(nullable: false),
-                    Away = table.Column<decimal>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<decimal>(type: "decimal(7,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offer", x => x.Id);
+                    table.PrimaryKey("PK_Odds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,10 +101,10 @@ namespace BettingApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
                     Result = table.Column<string>(nullable: true),
+                    Special = table.Column<bool>(nullable: false, defaultValue: false),
                     HomeTeamId = table.Column<int>(nullable: false),
                     AwayTeamId = table.Column<int>(nullable: false),
-                    CompetitionId = table.Column<int>(nullable: false),
-                    OfferId = table.Column<int>(nullable: false)
+                    CompetitionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,12 +127,6 @@ namespace BettingApp.Migrations
                         principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Fixture_Offer_OfferId",
-                        column: x => x.OfferId,
-                        principalTable: "Offer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,7 +135,7 @@ namespace BettingApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Outcome = table.Column<int>(nullable: false),
+                    OddsId = table.Column<int>(nullable: false),
                     FixtureId = table.Column<int>(nullable: false),
                     TicketId = table.Column<int>(nullable: true)
                 },
@@ -156,9 +149,39 @@ namespace BettingApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Bet_Odds_OddsId",
+                        column: x => x.OddsId,
+                        principalTable: "Odds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Bet_Ticket_TicketId",
                         column: x => x.TicketId,
                         principalTable: "Ticket",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FixtureOdds",
+                columns: table => new
+                {
+                    FixtureId = table.Column<int>(nullable: false),
+                    OddsId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FixtureOdds", x => new { x.FixtureId, x.OddsId });
+                    table.ForeignKey(
+                        name: "FK_FixtureOdds_Fixture_FixtureId",
+                        column: x => x.FixtureId,
+                        principalTable: "Fixture",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FixtureOdds_Odds_OddsId",
+                        column: x => x.OddsId,
+                        principalTable: "Odds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -167,6 +190,11 @@ namespace BettingApp.Migrations
                 name: "IX_Bet_FixtureId",
                 table: "Bet",
                 column: "FixtureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bet_OddsId",
+                table: "Bet",
+                column: "OddsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bet_TicketId",
@@ -194,9 +222,9 @@ namespace BettingApp.Migrations
                 column: "HomeTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fixture_OfferId",
-                table: "Fixture",
-                column: "OfferId");
+                name: "IX_FixtureOdds_OddsId",
+                table: "FixtureOdds",
+                column: "OddsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -205,22 +233,25 @@ namespace BettingApp.Migrations
                 name: "Bet");
 
             migrationBuilder.DropTable(
+                name: "FixtureOdds");
+
+            migrationBuilder.DropTable(
                 name: "Wallet");
+
+            migrationBuilder.DropTable(
+                name: "Ticket");
 
             migrationBuilder.DropTable(
                 name: "Fixture");
 
             migrationBuilder.DropTable(
-                name: "Ticket");
+                name: "Odds");
 
             migrationBuilder.DropTable(
                 name: "Team");
 
             migrationBuilder.DropTable(
                 name: "Competition");
-
-            migrationBuilder.DropTable(
-                name: "Offer");
 
             migrationBuilder.DropTable(
                 name: "Sport");

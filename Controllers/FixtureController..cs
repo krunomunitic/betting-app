@@ -34,12 +34,10 @@ namespace BettingApp.Controllers
                     homeTeamName = c.HomeTeam.Name,
                     awayTeamId = c.AwayTeamId,
                     awayTeamName = c.AwayTeam.Name,
-                    offer = new
+                    odds = c.FixtureOdds.Select(fo => new
                     {
-                        home = c.Offer.Home,
-                        draw = c.Offer.Draw,
-                        away = c.Offer.Away
-                    },
+                        name = fo.Odds.Name, value = fo.Odds.Value
+                    }).ToList(),
                     result = c.Result,
                 }));
 

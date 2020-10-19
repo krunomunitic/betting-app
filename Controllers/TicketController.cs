@@ -32,7 +32,7 @@ namespace BettingApp.Controllers
             var bets = new List<Bet>();
             ticket.Bets.ForEach(b =>
             {
-                var bet = new Bet { FixtureId = b.FixtureId, Outcome = b.Outcome };
+                var bet = new Bet { FixtureId = b.FixtureId, Odds = b.Odds };
                 bets.Add(bet);
                 _unitOfWork.Bet.Insert(bet);
             });
