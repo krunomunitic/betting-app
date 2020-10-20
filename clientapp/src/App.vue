@@ -20,4 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
+    .active {
+        background-color: blue !important;
+    }
 </style>

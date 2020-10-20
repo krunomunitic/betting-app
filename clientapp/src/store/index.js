@@ -26,7 +26,9 @@ export default new Vuex.Store({
             state.competitionsBySports = competitionsBySports
         },
         SET_FIXTURESBYCOMPETITION(state, fixturesByCompetition) {
-            state.fixturesByCompetition = fixturesByCompetition
+            // problem with re-rendering not triggered fix
+            let copyFBC = [ ...fixturesByCompetition ]
+            state.fixturesByCompetition = copyFBC
         },
         SET_TICKET(state, ticket) {
             state.ticket = ticket
@@ -53,8 +55,31 @@ export default new Vuex.Store({
             else {
                 ticket.bets = [bet]
             }
-
             commit('SET_TICKET', ticket)
+        },
+        updateFixturesByCompetition({ commit, getters }, betOnFixture) {
+            const fixturesByCompetition = getters.fixturesByCompetition
+
+            const competition = fixturesByCompetition.find(competition =>
+                competition.competitionName === betOnFixture.competitionName)
+
+            if (!competition) {
+                console.log('error')
+            }
+
+            const fixture = competition.fixtures.find(fixture =>
+                fixture.id === betOnFixture.fixtureId)
+
+            if (!fixture) {
+                console.log('error')
+            }
+
+            for (const [oddsName, odds] of Object.entries(fixture.odds)) {
+                odds.betted = oddsName === betOnFixture.oddsType
+            }
+
+            commit('SET_FIXTURESBYCOMPETITION', fixturesByCompetition)
+            // TODO update fixtures if special exist
         }
     },
 })
