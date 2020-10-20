@@ -17,7 +17,7 @@ export default new Vuex.Store({
         fixturesByCompetition: state => {
             return state.fixturesByCompetition
         },
-        getTicket(state) {
+        ticket(state) {
             return state.ticket;
         },
     },
@@ -31,7 +31,9 @@ export default new Vuex.Store({
             state.fixturesByCompetition = copyFBC
         },
         SET_TICKET(state, ticket) {
-            state.ticket = ticket
+            // problem with re-rendering not triggered fix
+            let copyTicket = { ...ticket }
+            state.ticket = copyTicket
         },
     },
     actions: {
@@ -44,18 +46,6 @@ export default new Vuex.Store({
             axios.get('/api/fixture').then(({ data }) => {
                 commit('SET_FIXTURESBYCOMPETITION', data)
             })
-        },
-        addBet({ commit, getters }, bet) {
-            const ticket = getters.getTicket
-
-            // TODO: Validate if bet can be placed on this ticket
-            if (ticket.bets && ticket.bets.length) {
-                ticket.bets.push(bet)
-            }
-            else {
-                ticket.bets = [bet]
-            }
-            commit('SET_TICKET', ticket)
         },
         updateFixturesByCompetition({ commit, getters }, betOnFixture) {
             const fixturesByCompetition = getters.fixturesByCompetition
@@ -74,12 +64,56 @@ export default new Vuex.Store({
                 console.log('error')
             }
 
-            for (const [oddsName, odds] of Object.entries(fixture.odds)) {
-                odds.betted = oddsName === betOnFixture.oddsType
+            if (betOnFixture.oddsType) {
+                fixture.hasBet = true
+                for (const [oddsName, odds] of Object.entries(fixture.odds)) {
+                    odds.betted = oddsName === betOnFixture.oddsType
+                }
+            } else {
+                fixture.hasBet = false
+                for (const odds of Object.entries(fixture.odds)) {
+                    odds.betted = false
+                }
             }
 
             commit('SET_FIXTURESBYCOMPETITION', fixturesByCompetition)
             // TODO update fixtures if special exist
+        },
+        addBet({ commit, getters }, bet) {
+            const ticket = getters.ticket
+
+            if (!ticket.bets || !ticket.bets.length) {
+                ticket.bets = [bet]
+            }
+
+            const betExist = ticket.bets.find(b => b.fixtureId === bet.fixtureId);
+            if (betExist) {
+                betExist.odds = bet.odds
+                betExist.oddsType = bet.oddsType
+            } else {
+                ticket.bets.push(bet)
+            }
+
+            commit('SET_TICKET', ticket)
+        },
+        removeBet({ commit, getters }, fixtureId) {
+            const ticket = getters.ticket
+            if (!ticket.bets || !ticket.bets.length) {
+                console.log("error")
+            }
+
+            const betIndex = ticket.bets.findIndex(bet => bet.fixtureId === fixtureId)
+
+            if (betIndex === '-1') {
+                console.log("error")
+            }
+
+            ticket.bets.splice(betIndex, 1)
+
+            commit('SET_TICKET', ticket)
+        },
+        betOnTicket() {
+
         }
     },
 })

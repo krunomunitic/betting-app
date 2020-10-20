@@ -121,7 +121,8 @@ namespace BettingApp.Data
             {
                 // TODO: set now plus a few days
                 new Fixture { Date = DateTime.Parse("2020-11-11"), HomeTeamId = teams.Single(t=> t.Name == "Arsenal").Id, AwayTeamId = teams.Single(t => t.Name == "Chelsea").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id, Special = true},
+                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id, Special = false},
                 // TODO: set now minus few days, already played
                 new Fixture { Date = DateTime.Parse("2020-10-10"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id, Result = "1:3"},
             };
@@ -137,9 +138,6 @@ namespace BettingApp.Data
             {
                 for (int i = startIndex; i < startIndex + 6; i++)
                 {
-                    if (startIndex == 16) continue;
-                    if (startIndex == 18) continue;
-
                     var fixtureOdds = new FixtureOdds
                     {
                         FixtureId = fixture.Id,

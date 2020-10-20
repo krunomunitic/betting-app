@@ -37,6 +37,7 @@ namespace BettingApp.Controllers
                         homeTeamName = f.HomeTeam.Name,
                         awayTeamId = f.AwayTeamId,
                         awayTeamName = f.AwayTeam.Name,
+                        special = f.Special,
                         odds = f.FixtureOdds.ToDictionary(fo => fo.Odds.Name,
                         fo => new {
                             value = fo.Odds.Value

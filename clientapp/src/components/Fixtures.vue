@@ -9,7 +9,7 @@
                 </b-col>
             </b-row>
             <div v-for="fixture in fixtureCompetition.fixtures" :key='fixture.id'>
-                <b-row align-h="between">
+                <b-row align-h="between" :style="[fixture.special && `background-color: gray;`]">
                     <b-col cols="5">
                         {{fixture.data}} {{fixture.homeTeamName}} - {{fixture.awayTeamName}} {{fixture.result}}
                     </b-col>
@@ -17,45 +17,54 @@
                         <b-row>
                             <b-button squared disable="!fixture.odds['1'] || !fixture.odds['1'].value"
                                       @click="addBet(fixture.id, fixture.odds['1'].value, '1');
-                                      updateFixtureInfo(fixture.id, '1', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['1'].betted">
-                                {{fixture.odds['1'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, '1');"
+                                      :pressed="fixture.odds['1'].betted && fixture.hasBet">
+                                {{fixture.odds['1'].value.toFixed(2)}}
                             </b-button>
                             <b-button squared disable="!fixture.odds['X'] || !fixture.odds['X'].value"
                                       @click="addBet(fixture.id, fixture.odds['X'].value, 'X');
-                                      updateFixtureInfo(fixture.id, 'X', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['X'].betted">
-                                {{fixture.odds['X'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, 'X');"
+                                      :pressed="fixture.odds['X'].betted && fixture.hasBet">
+                                {{fixture.odds['X'].value.toFixed(2)}}
                             </b-button>
                             <b-button squared disable="!fixture.odds['2'] || !fixture.odds['2'].value"
                                       @click="addBet(fixture.id, fixture.odds['2'].value, '2');
-                                      updateFixtureInfo(fixture.id, '2', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['2'].betted">
-                                {{fixture.odds['2'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, '2');"
+                                      :pressed="fixture.odds['2'].betted && fixture.hasBet">
+                                {{fixture.odds['2'].value.toFixed(2)}}
                             </b-button>
                             <b-button squared disable="!fixture.odds['12'] || !fixture.odds['12'].value"
                                       @click="addBet(fixture.id, fixture.odds['12'].value, '12');
-                                      updateFixtureInfo(fixture.id, '12', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['12'].betted">
-                                {{fixture.odds['12'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, '12');"
+                                      :pressed="fixture.odds['12'].betted && fixture.hasBet">
+                                {{fixture.odds['12'].value.toFixed(2)}}
                             </b-button>
                             <b-button squared disable="!fixture.odds['X1'] || !fixture.odds['X1'].value"
                                       @click="addBet(fixture.id, fixture.odds['X1'].value, 'X1');
-                                      updateFixtureInfo(fixture.id, 'X1', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['X1'].betted">
-                                {{fixture.odds['X1'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, 'X1');"
+                                      :pressed="fixture.odds['X1'].betted && fixture.hasBet">
+                                {{fixture.odds['X1'].value.toFixed(2)}}
                             </b-button>
                             <b-button squared disable="!fixture.odds['X2'] || !fixture.odds['X2'].value"
                                       @click="addBet(fixture.id, fixture.odds['X2'].value, 'X2');
-                                      updateFixtureInfo(fixture.id, 'X2', fixtureCompetition.competitionName);"
-                                      :pressed="fixture.odds['X2'].betted">
-                                {{fixture.odds['X2'].value}}
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id, 'X2');"
+                                      :pressed="fixture.odds['X2'].betted && fixture.hasBet">
+                                {{fixture.odds['X2'].value.toFixed(2)}}
+                            </b-button>
+                            <b-button squared v-if="fixture.hasBet"
+                                      @click="removeBet(fixture.id);
+                                      updateFixturesByCompetition(fixtureCompetition.competitionName, fixture.id);">
+                                X
                             </b-button>
                         </b-row>
                     </b-col>
                 </b-row>
             </div>
         </div>
+        <b-button squared v-if="ticket && ticket.bets && ticket.bets.length"
+                  @click="betOnTicket()">
+            Place Bet
+        </b-button>
     </div>
 </template>
 
@@ -71,15 +80,21 @@
             this.$store.dispatch('getFixturesByCompetition')
         },
         computed: {
-            ...mapGetters(['fixturesByCompetition'])
+            ...mapGetters(['fixturesByCompetition', 'ticket'])
         },
         methods: {
             // ...mapActions(['addBet', './store/index']),
             addBet(fixtureId, odds, oddsType) {
                 this.$store.dispatch('addBet', { fixtureId, odds, oddsType })
             },
-            updateFixtureInfo(fixtureId, oddsType, competitionName) {
-                this.$store.dispatch('updateFixturesByCompetition', { fixtureId, oddsType, competitionName })
+            updateFixturesByCompetition(competitionName, fixtureId, oddsType) {
+                this.$store.dispatch('updateFixturesByCompetition', { competitionName, fixtureId, oddsType })
+            },
+            removeBet(fixtureId) {
+                this.$store.dispatch('removeBet', fixtureId)
+            },
+            betOnTicket() {
+                this.$store.dispatch('betOnTicket')
             }
         },
     }
