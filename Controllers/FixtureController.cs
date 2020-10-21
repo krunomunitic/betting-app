@@ -40,6 +40,7 @@ namespace BettingApp.Controllers
                         special = f.Special,
                         odds = f.FixtureOdds.ToDictionary(fo => fo.Odds.Name,
                         fo => new {
+                            id = fo.OddsId,
                             value = fo.Odds.Value
                         }),
                         result = f.Result,

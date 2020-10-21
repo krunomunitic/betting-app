@@ -1,7 +1,8 @@
 ﻿import Vue from "vue";
 import Router from "vue-router";
 
-import fixtures from '../components/Fixtures';
+import Fixtures from '../components/Fixtures';
+import Ticket from '../components/Ticket';
 // import wallet from './components/Wallet';
 
 Vue.use(Router);
@@ -13,7 +14,12 @@ export default new Router({
             path: "/",
             alias: "/",
             name: "fixtures",
-            component: fixtures
+            component: Fixtures
+        },
+        {
+        path: "/ticket",
+        name: "ticket",
+        component: Ticket
         },
         /*{
             path: "/wallet",

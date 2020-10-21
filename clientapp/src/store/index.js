@@ -55,6 +55,7 @@ export default new Vuex.Store({
 
             if (!competition) {
                 console.log('error')
+                return;
             }
 
             const fixture = competition.fixtures.find(fixture =>
@@ -62,6 +63,7 @@ export default new Vuex.Store({
 
             if (!fixture) {
                 console.log('error')
+                return;
             }
 
             if (betOnFixture.oddsType) {
@@ -106,14 +108,36 @@ export default new Vuex.Store({
 
             if (betIndex === '-1') {
                 console.log("error")
+                return;
             }
 
             ticket.bets.splice(betIndex, 1)
 
             commit('SET_TICKET', ticket)
         },
-        betOnTicket() {
+        betOnTicket({ getters }, stake) {
+            const ticket = getters.ticket
 
+            // TODO: check wallet balance
+            if (!ticket || !ticket.bets || !ticket.bets.length) {
+                console.log("error")
+                return;
+            }
+
+            const formattedTicket = {
+                Stake: stake,
+                Bets: ticket.bets.map(bet => ({
+                    FixtureId: bet.fixtureId,
+                    OddsId: bet.odds.id
+                }))
+            }
+
+            axios.post('/api/ticket', formattedTicket
+            ).then(response => {
+                console.log(response)
+            }).catch(e => {
+                console.log(e)
+            })
         }
     },
 })
