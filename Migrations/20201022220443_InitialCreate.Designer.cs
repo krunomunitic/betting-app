@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BettingApp.Migrations
 {
     [DbContext(typeof(BettingAppContext))]
-    [Migration("20201018231901_InitialCreate")]
+    [Migration("20201022220443_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,11 +90,6 @@ namespace BettingApp.Migrations
                     b.Property<string>("Result")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Special")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.HasKey("Id");
 
                     b.HasIndex("AwayTeamId");
@@ -119,6 +114,21 @@ namespace BettingApp.Migrations
                     b.HasIndex("OddsId");
 
                     b.ToTable("FixtureOdds");
+                });
+
+            modelBuilder.Entity("BettingApp.Models.FixtureOddsSpecial", b =>
+                {
+                    b.Property<int>("FixtureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OddsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FixtureId", "OddsId");
+
+                    b.HasIndex("OddsId");
+
+                    b.ToTable("FixtureOddsSpecial");
                 });
 
             modelBuilder.Entity("BettingApp.Models.Odds", b =>
@@ -258,6 +268,21 @@ namespace BettingApp.Migrations
 
                     b.HasOne("BettingApp.Models.Odds", "Odds")
                         .WithMany("FixtureOdds")
+                        .HasForeignKey("OddsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BettingApp.Models.FixtureOddsSpecial", b =>
+                {
+                    b.HasOne("BettingApp.Models.Fixture", "Fixture")
+                        .WithMany("FixtureOddsSpecial")
+                        .HasForeignKey("FixtureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BettingApp.Models.Odds", "Odds")
+                        .WithMany("FixtureOddsSpecial")
                         .HasForeignKey("OddsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

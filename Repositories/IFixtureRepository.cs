@@ -7,5 +7,6 @@ namespace BettingApp.Repositories
     public interface IFixtureRepository : IGenericRepository<Fixture>
     {
         IEnumerable<Fixture> GetAllFixtures();
+        IEnumerable<Fixture> GetAllFixturesWithSpecialOdds();
     }
 }

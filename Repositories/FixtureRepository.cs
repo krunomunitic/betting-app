@@ -22,5 +22,15 @@ namespace BettingApp.Repositories
                 .Include(f => f.FixtureOdds).ThenInclude(fo => fo.Odds)
                 .ToList();
         }
+
+        public IEnumerable<Fixture> GetAllFixturesWithSpecialOdds()
+        {
+            return _context.Fixtures.Where(f => f.FixtureOddsSpecial.Any())
+                .Include(f => f.AwayTeam)
+                .Include(f => f.HomeTeam)
+                .Include(f => f.Competition)
+                .Include(f => f.FixtureOddsSpecial).ThenInclude(fo => fo.Odds)
+                .ToList();
+        }
     }
 }

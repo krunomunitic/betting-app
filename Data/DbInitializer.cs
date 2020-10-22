@@ -82,7 +82,7 @@ namespace BettingApp.Data
 
             var odds = new Odds[]
             {
-                new Odds { Name = "1", Value = 2.15M },
+                new Odds { Name = "1", Value = 1.25M },
                 new Odds { Name = "2", Value = 2.05M },
                 new Odds { Name = "X", Value = 3.75M },
                 new Odds { Name = "12", Value = 1.30M },
@@ -109,6 +109,19 @@ namespace BettingApp.Data
                 new Odds { Name = "12", Value = 1.10M },
                 new Odds { Name = "X1", Value = 1.15M },
                 new Odds { Name = "X2", Value = 2.65M },
+
+                new Odds { Name = "1", Value = 1.60M },
+                new Odds { Name = "2", Value = 9.45M },
+                new Odds { Name = "X", Value = 2.80M },
+                new Odds { Name = "12", Value = 1.05M },
+                new Odds { Name = "X1", Value = 1.15M },
+                new Odds { Name = "X2", Value = 2.35M },
+
+                new Odds { Name = "1", Value = 1.45M },
+                new Odds { Name = "2", Value = 2.10M },
+                new Odds { Name = "X", Value = 2.00M },
+                new Odds { Name = "X1", Value = 1.15M },
+                new Odds { Name = "X2", Value = 2.65M },
             };
 
             foreach (Odds singleOdds in odds)
@@ -117,12 +130,31 @@ namespace BettingApp.Data
             }
             context.SaveChanges();
 
+            var specialOdds = new Odds[]
+            {
+                new Odds { Name = "1", Value = 8.15M },
+                new Odds { Name = "2", Value = 2.00M },
+                new Odds { Name = "X", Value = 5.10M },
+                new Odds { Name = "1", Value = 1.90M },
+                new Odds { Name = "2", Value = 9.00M },
+                new Odds { Name = "X", Value = 7.50M },
+            };
+
+            foreach (Odds singleOdds in specialOdds)
+            {
+                context.Odds.Add(singleOdds);
+            }
+
+            context.SaveChanges();
+
             var fixtures = new Fixture[]
             {
                 // TODO: set now plus a few days
                 new Fixture { Date = DateTime.Parse("2020-11-11"), HomeTeamId = teams.Single(t=> t.Name == "Arsenal").Id, AwayTeamId = teams.Single(t => t.Name == "Chelsea").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id, Special = true},
-                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id, Special = false},
+                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Liverpool").Id, AwayTeamId = teams.Single(t => t.Name == "Everton").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "Atletico Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Sevilla").Id,  CompetitionId =  competitions.Single(s=> s.Name == "La Liga").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "LA Lakers").Id, AwayTeamId = teams.Single(t => t.Name == "Miami Heat").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NBA").Id},
                 // TODO: set now minus few days, already played
                 new Fixture { Date = DateTime.Parse("2020-10-10"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id, Result = "1:3"},
             };
@@ -134,20 +166,39 @@ namespace BettingApp.Data
             context.SaveChanges();
 
             int startIndex = 0;
+            int startIndexSpecial = 0;
             foreach (Fixture fixture in fixtures)
             {
                 for (int i = startIndex; i < startIndex + 6; i++)
                 {
-                    var fixtureOdds = new FixtureOdds
+                    if (i < odds.Length)
                     {
-                        FixtureId = fixture.Id,
-                        OddsId = odds[i].Id
-                    };
+                        var fixtureOdds = new FixtureOdds
+                        {
+                            FixtureId = fixture.Id,
+                            OddsId = odds[i].Id
+                        };
 
-                    context.FixtureOdds.Add(fixtureOdds);
+                        context.FixtureOdds.Add(fixtureOdds);
+                    }
+                }
+
+                for (int i = startIndexSpecial; i < startIndexSpecial + 3; i++)
+                {
+                    if (i < specialOdds.Length)
+                    {
+                        var fixtureOddsSpecial = new FixtureOddsSpecial
+                        {
+                            FixtureId = fixture.Id,
+                            OddsId = specialOdds[i].Id
+                        };
+
+                        context.FixtureOddsSpecial.Add(fixtureOddsSpecial);
+                    }
                 }
 
                 startIndex += 6;
+                startIndexSpecial += 3;
             }
             context.SaveChanges();
         }

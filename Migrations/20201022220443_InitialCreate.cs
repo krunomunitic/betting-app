@@ -101,7 +101,6 @@ namespace BettingApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
                     Result = table.Column<string>(nullable: true),
-                    Special = table.Column<bool>(nullable: false, defaultValue: false),
                     HomeTeamId = table.Column<int>(nullable: false),
                     AwayTeamId = table.Column<int>(nullable: false),
                     CompetitionId = table.Column<int>(nullable: false)
@@ -186,6 +185,30 @@ namespace BettingApp.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "FixtureOddsSpecial",
+                columns: table => new
+                {
+                    FixtureId = table.Column<int>(nullable: false),
+                    OddsId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FixtureOddsSpecial", x => new { x.FixtureId, x.OddsId });
+                    table.ForeignKey(
+                        name: "FK_FixtureOddsSpecial_Fixture_FixtureId",
+                        column: x => x.FixtureId,
+                        principalTable: "Fixture",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FixtureOddsSpecial_Odds_OddsId",
+                        column: x => x.OddsId,
+                        principalTable: "Odds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Bet_FixtureId",
                 table: "Bet",
@@ -225,6 +248,11 @@ namespace BettingApp.Migrations
                 name: "IX_FixtureOdds_OddsId",
                 table: "FixtureOdds",
                 column: "OddsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FixtureOddsSpecial_OddsId",
+                table: "FixtureOddsSpecial",
+                column: "OddsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -234,6 +262,9 @@ namespace BettingApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "FixtureOdds");
+
+            migrationBuilder.DropTable(
+                name: "FixtureOddsSpecial");
 
             migrationBuilder.DropTable(
                 name: "Wallet");

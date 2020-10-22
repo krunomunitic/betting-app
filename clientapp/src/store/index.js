@@ -1,6 +1,7 @@
 ﻿import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios';
+import router from '../router/'
 
 Vue.use(Vuex)
 
@@ -8,6 +9,7 @@ export default new Vuex.Store({
     state: {
         competitionsBySports: [],
         fixturesByCompetition: [],
+        fixturesByCompetitionSpecial: [],
         ticket: {},
         balance: 0,
     },
@@ -17,6 +19,9 @@ export default new Vuex.Store({
         },
         fixturesByCompetition: state => {
             return state.fixturesByCompetition
+        },
+        fixturesByCompetitionSpecial: state => {
+            return state.fixturesByCompetitionSpecial
         },
         ticket(state) {
             return state.ticket;
@@ -29,10 +34,18 @@ export default new Vuex.Store({
         SET_COMPETITIONBYSPORTS(state, competitionsBySports) {
             state.competitionsBySports = competitionsBySports
         },
-        SET_FIXTURESBYCOMPETITION(state, fixturesByCompetition) {
+        SET_FIXTURES(state, fixtures) {
             // problem with re-rendering not triggered fix
-            let copyFBC = [ ...fixturesByCompetition ]
-            state.fixturesByCompetition = copyFBC
+            if (fixtures && fixtures.fixturesByCompetition) {
+                const temp = [ ...fixtures.fixturesByCompetition ]
+                state.fixturesByCompetition = temp
+            }
+
+            // problem with re-rendering not triggered fix
+            if (fixtures && fixtures.fixturesByCompetitionSpecial) {
+                const temp = [...fixtures.fixturesByCompetitionSpecial]
+                state.fixturesByCompetitionSpecial = temp
+            }
         },
         SET_TICKET(state, ticket) {
             // problem with re-rendering not triggered fix
@@ -49,9 +62,9 @@ export default new Vuex.Store({
                 commit('SET_COMPETITIONBYSPORTS', data)
             }) 
         },
-        getFixturesByCompetition({ commit }) {
+        getFixtures({ commit }) {
             axios.get('/api/fixture').then(({ data }) => {
-                commit('SET_FIXTURESBYCOMPETITION', data)
+                commit('SET_FIXTURES', data)
             })
         },
         getWalletBalance({ commit }) {
@@ -59,14 +72,14 @@ export default new Vuex.Store({
                 commit('SET_BALANCE', data)
             })
         },
-        updateFixturesByCompetition({ commit, getters }, betOnFixture) {
+        updateFixturesWithStatus({ commit, getters }, betOnFixture) {
             const fixturesByCompetition = getters.fixturesByCompetition
 
             const competition = fixturesByCompetition.find(competition =>
                 competition.competitionName === betOnFixture.competitionName)
 
             if (!competition) {
-                console.log('error')
+                console.log('error - No competition')
                 return;
             }
 
@@ -74,11 +87,11 @@ export default new Vuex.Store({
                 fixture.id === betOnFixture.fixtureId)
 
             if (!fixture) {
-                console.log('error')
+                console.log('error - No fixture')
                 return;
             }
 
-            if (betOnFixture.oddsType) {
+            if (betOnFixture.oddsType && !betOnFixture.special) {
                 fixture.hasBet = true
                 for (const [oddsName, odds] of Object.entries(fixture.odds)) {
                     odds.betted = oddsName === betOnFixture.oddsType
@@ -89,9 +102,41 @@ export default new Vuex.Store({
                     odds.betted = false
                 }
             }
+            commit('SET_FIXTURES', { fixturesByCompetition })
 
-            commit('SET_FIXTURESBYCOMPETITION', fixturesByCompetition)
-            // TODO update fixtures if special exist
+            // set for special fixtures
+            const fixturesByCompetitionSpecial = getters.fixturesByCompetitionSpecial
+
+            const competitionSpecial = fixturesByCompetitionSpecial.find(competition =>
+                competition.competitionName === betOnFixture.competitionName)
+
+            if (!competitionSpecial) {
+                console.log('error - no competition in special')
+                return;
+            }
+
+            const fixtureSpecial = competitionSpecial.fixtures.find(fixture =>
+                fixture.id === betOnFixture.fixtureId)
+
+            if (!fixtureSpecial) {
+                console.log('log - no fixture in special')
+                return;
+            }
+
+            if (betOnFixture.oddsType && betOnFixture.special) {
+                fixtureSpecial.hasBet = true
+                for (const [oddsName, odds] of Object.entries(fixtureSpecial.odds)) {
+                    odds.betted = oddsName === betOnFixture.oddsType
+                }
+            } else {
+                fixtureSpecial.hasBet = false
+                for (const odds of Object.entries(fixtureSpecial.odds)) {
+                    odds.betted = false
+                }
+            }
+
+            commit('SET_FIXTURES', { fixturesByCompetitionSpecial })
+
         },
         addBet({ commit, getters }, bet) {
             const ticket = getters.ticket
@@ -104,6 +149,7 @@ export default new Vuex.Store({
             if (betExist) {
                 betExist.odds = bet.odds
                 betExist.oddsType = bet.oddsType
+                betExist.special = bet.special
             } else {
                 ticket.bets.push(bet)
             }
@@ -119,7 +165,7 @@ export default new Vuex.Store({
             const betIndex = ticket.bets.findIndex(bet => bet.fixtureId === fixtureId)
 
             if (betIndex === '-1') {
-                console.log("error")
+                console.log("error - no bet")
                 return;
             }
 
@@ -127,18 +173,52 @@ export default new Vuex.Store({
 
             commit('SET_TICKET', ticket)
         },
-        betOnTicket({ getters, dispatch }, stake) {
-            dispatch('getWalletBalance')
-
+        validateTicket({ getters }) {
             const ticket = getters.ticket
-            const balance = getters.balance
+            console.log("TICKET", ticket)
 
-            if (stake > balance) { console.log("error")
+            if (!ticket || !ticket.bets || !ticket.bets.length) {
+                console.log("log - no bets")
                 return;
             }
 
+            const numberOfSpecialFixtures = ticket.bets.filter(bet => bet.special).length
+            if (numberOfSpecialFixtures > 1) {
+                console.log("log - only one special allowed")
+                return;
+            }
+
+            if (numberOfSpecialFixtures === 1) {
+                // check if there are at least 5 other bets
+                if (ticket.bets.length < 6) {
+                    console.log("log - less than 5 other bets")
+                    return;
+                }
+
+                // check if the odds of other bets are over or 1.1
+                const numberOfValidOdds = ticket.bets.filter(bet => bet.odds && bet.odds.value >= 1.1 && !bet.special).length
+                console.log("numberOfValidOdds", numberOfValidOdds, ticket.bets.length - 1)
+                if (numberOfValidOdds < ticket.bets.length - 1) {
+                    console.log("log - not all bets are valid")
+                    return;
+                }
+            }
+
+            router.push({ name: 'ticket' });
+        },
+        betOnTicket({ getters, dispatch }, stake) {
+            const ticket = getters.ticket
+
             if (!ticket || !ticket.bets || !ticket.bets.length) {
-                console.log("error")
+                console.log("error - no bets")
+                return;
+            }
+
+            dispatch('getWalletBalance')
+            const balance = getters.balance
+
+            if (stake > balance) {
+                console.log("log - not enough balance")
                 return;
             }
 
