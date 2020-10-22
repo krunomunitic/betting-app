@@ -14,7 +14,14 @@
         </div>
         <b-row>
             <b-col sm="5">
-                <b-form-input type="number" v-model="stake" min="0" placeholder="Stake 12.34$"></b-form-input>
+                <b-form-input type="number" :value="stake" @input="updateReturns"  min="0" placeholder="Stake 12.34$" ></b-form-input>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col sm="6">
+                Estimated returns: {{(returns).toFixed(2)}}
+                Tax: {{(tax).toFixed(2)}}
+                Returns After Tax: {{returnsAfterTax.toFixed(2)}}
             </b-col>
             <b-col sm="6">
                 <b-button squared @click="goBack()">
@@ -28,18 +35,17 @@
     </div>
 </template>
 
-<script>
-    // import { mapActions } from 'vuex'
+<script>// import { mapActions } from 'vuex'
     // import { mapGetters } from 'vuex'
 
     export default {
         data() {
             return {
-                stake: null
+                stake: null,
+                tax: 0,
+                returns: 0,
+                returnsAfterTax: 0
             }
-        },
-        mounted() {
-            // this.$store.dispatch('getFixturesByCompetition')
         },
         computed: {
             ticket() {
@@ -47,7 +53,20 @@
                 if (!ticket || !ticket.bets || !ticket.bets.length) {
                     this.goBack()
                 }
+
                 return ticket
+            },
+            oddsCalc() {
+                // ticket already got
+                if (!this.ticket || !this.ticket.bets || !this.ticket.bets.length) {
+                    this.goBack()
+                }
+
+                let oddsCalc = 1;
+                this.ticket.bets.forEach(bet => {
+                    oddsCalc *= bet.odds.value
+                })
+                return oddsCalc
             }
         },
         methods: {
@@ -58,10 +77,15 @@
             },
             goBack() {
                 this.$router.push({ name: 'fixtures' });
+            },
+            updateReturns(value) {
+                this.stake = value
+                this.returns = this.stake * this.oddsCalc
+                this.tax = this.returns * 0.05
+                this.returnsAfterTax = this.returns - this.tax
             }
         },
-    }
-</script>
+    }</script>
 
 <style scoped>
 </style>

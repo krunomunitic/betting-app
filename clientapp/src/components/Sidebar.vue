@@ -10,7 +10,7 @@
 </template>
 
 <script>
-//import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {};
@@ -19,16 +19,8 @@ export default {
             this.$store.dispatch('getCompetitionsBySports')
         },
         computed: {
-            competitionsBySports() {
-                return this.$store.state.competitionsBySports
-            },
+            ...mapGetters(['competitionsBySports'])
         }
-    /*
-    computed: {
-        ...mapGetters({
-            competitionsBySports: 'getCompetitionsBySports'
-        })
-    }*/
 }
 </script>
 

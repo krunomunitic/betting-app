@@ -2,19 +2,14 @@
     <div>
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-nav class="ml-auto">
-            <b-nav-item href="#">Wallet</b-nav-item>
+            <b-nav-item href="/wallet">Wallet</b-nav-item>
         </b-navbar-nav>
         </b-navbar>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'Navbar',
-    props: {
-        msg: String
-    }
-}
+export default {}
 </script>
 
 <style scoped>

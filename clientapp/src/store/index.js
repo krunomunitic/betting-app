@@ -9,6 +9,7 @@ export default new Vuex.Store({
         competitionsBySports: [],
         fixturesByCompetition: [],
         ticket: {},
+        balance: 0,
     },
     getters: {
         competitionsBySports: state => {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
         ticket(state) {
             return state.ticket;
         },
+        balance(state) {
+            return state.balance
+        }
     },
     mutations: {
         SET_COMPETITIONBYSPORTS(state, competitionsBySports) {
@@ -35,6 +39,9 @@ export default new Vuex.Store({
             let copyTicket = { ...ticket }
             state.ticket = copyTicket
         },
+        SET_BALANCE(state, balance) {
+            state.balance = balance
+        }
     },
     actions: {
         getCompetitionsBySports({ commit }) {
@@ -45,6 +52,11 @@ export default new Vuex.Store({
         getFixturesByCompetition({ commit }) {
             axios.get('/api/fixture').then(({ data }) => {
                 commit('SET_FIXTURESBYCOMPETITION', data)
+            })
+        },
+        getWalletBalance({ commit }) {
+            axios.get('/api/wallet').then(({ data }) => {
+                commit('SET_BALANCE', data)
             })
         },
         updateFixturesByCompetition({ commit, getters }, betOnFixture) {
@@ -115,10 +127,16 @@ export default new Vuex.Store({
 
             commit('SET_TICKET', ticket)
         },
-        betOnTicket({ getters }, stake) {
-            const ticket = getters.ticket
+        betOnTicket({ getters, dispatch }, stake) {
+            dispatch('getWalletBalance')
 
-            // TODO: check wallet balance
+            const ticket = getters.ticket
+            const balance = getters.balance
+
+            if (stake > balance) { console.log("error")
+                return;
+            }
+
             if (!ticket || !ticket.bets || !ticket.bets.length) {
                 console.log("error")
                 return;
@@ -134,6 +152,15 @@ export default new Vuex.Store({
 
             axios.post('/api/ticket', formattedTicket
             ).then(response => {
+                console.log(response)
+            }).catch(e => {
+                console.log(e)
+            })
+        },
+        updateBalance({ commit }, balance) {
+            axios.post('/api/wallet', { balance }
+            ).then(response => {
+                commit('SET_BALANCE', balance)
                 console.log(response)
             }).catch(e => {
                 console.log(e)

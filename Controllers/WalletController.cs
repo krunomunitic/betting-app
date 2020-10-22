@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BettingApp.UnitOfWork;
+using BettingApp.Models;
 
 namespace BettingApp.Controllers
 {
@@ -18,21 +19,21 @@ namespace BettingApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            // TODO: no 0, first or default, or another way
+            // TODO: no 1, first or default, or another way
             var wallet = _unitOfWork.Wallet.FindById(1);
 
-            return Ok(wallet);
+            return Ok(wallet.Balance);
         }
 
         // TODO: refactor this (first or default...)
         [HttpPost]
-        public ActionResult Submit(int Balance)
+        public IActionResult Update([FromBody] Wallet wallet)
         {
-            var wallet = _unitOfWork.Wallet.FindById(1);
-            wallet.Balance = Balance;
-            _unitOfWork.Wallet.Update(wallet);
+            var userWallet = _unitOfWork.Wallet.FindById(1);
+            userWallet.Balance = wallet.Balance;
+            _unitOfWork.Wallet.Update(userWallet);
             _unitOfWork.Complete();
 
             return Ok();
