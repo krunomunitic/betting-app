@@ -3,7 +3,8 @@ import Router from "vue-router";
 
 import Fixtures from '../components/Fixtures';
 import Ticket from '../components/Ticket';
-import Wallet from '../components/Wallet';
+import Wallet from '../components/user/Wallet';
+import Tickets from '../components/user/Tickets';
 
 Vue.use(Router);
 
@@ -21,7 +22,12 @@ export default new Router({
             component: Ticket
         },
         {
-            path: "/wallet",
+            path: '/user/tickets',
+            name: 'tickets',
+            component: Tickets
+        },
+        {
+            path: "/user/wallet",
             name: "wallet",
             component: Wallet
         },

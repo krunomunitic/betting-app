@@ -21,7 +21,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var tickets = _unitOfWork.Ticket.GetAll();
+            var tickets = _unitOfWork.Ticket.GetAllTicketsWithDetails();
 
             return Ok(tickets);
         }

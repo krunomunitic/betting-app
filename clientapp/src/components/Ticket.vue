@@ -14,7 +14,7 @@
         </div>
         <b-row>
             <b-col sm="5">
-                <b-form-input type="number" :value="stake" @input="updateReturns"  min="0" placeholder="Stake 12.34$" ></b-form-input>
+                <b-form-input type="number" :value="stake" @input="updateReturns" min="0" placeholder="Stake 12.34$"></b-form-input>
             </b-col>
         </b-row>
         <b-row>
@@ -35,7 +35,8 @@
     </div>
 </template>
 
-<script>// import { mapActions } from 'vuex'
+<script>
+    // import { mapActions } from 'vuex'
     // import { mapGetters } from 'vuex'
 
     export default {
@@ -70,7 +71,7 @@
             }
         },
         methods: {
-            // ...mapActions(['addBet', './store/index']),
+            // ...mapActions(['addBet', 'store']),
             betOnTicket() {
                 this.$store.dispatch('betOnTicket', Number(this.stake))
                 // this.$store.dispatch('addBet', { fixtureId, odds, oddsType })

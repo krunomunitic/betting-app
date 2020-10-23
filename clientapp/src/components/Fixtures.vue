@@ -1,18 +1,19 @@
 <template>
     <div>
+        <sidebar />
         <b-row align-h="between">
-            Special Offers
+            <b-col cols="12">
+                Special Offers
+            </b-col>
         </b-row>
         <div v-for='fixtureCompetition in fixturesByCompetitionSpecial' :key='fixtureCompetition.competitionName + `Special`'>
             <b-row align-h="between">
                 <b-col cols="5">
                     <div>{{fixtureCompetition.competitionName}}</div>
                 </b-col>
-                <b-col cols="7">
-                </b-col>
             </b-row>
             <div v-for="fixture in fixtureCompetition.fixtures" :key='fixture.id'>
-                <b-row align-h="between" :style="[fixture.special && `background-color: gray;`]">
+                <b-row align-h="between">
                     <b-col cols="5">
                         {{fixture.date}} {{fixture.homeTeamName}} - {{fixture.awayTeamName}} {{fixture.result}}
                     </b-col>
@@ -66,7 +67,9 @@
         </div>
 
         <b-row align-h="between">
-            Regular Offers
+            <b-col cols="12">
+                Regular Offers
+            </b-col>
         </b-row>
         <div v-for='fixtureCompetition in fixturesByCompetition' :key='fixtureCompetition.competitionName'>
             <b-row align-h="between">
@@ -77,7 +80,7 @@
                 </b-col>
             </b-row>
             <div v-for="fixture in fixtureCompetition.fixtures" :key='fixture.id'>
-                <b-row align-h="between" :style="[fixture.special && `background-color: gray;`]">
+                <b-row align-h="between">
                     <b-col cols="5">
                         {{fixture.date}} {{fixture.homeTeamName}} - {{fixture.awayTeamName}} {{fixture.result}}
                     </b-col>
@@ -139,8 +142,12 @@
 <script>
     // import { mapActions } from 'vuex'
     import { mapGetters } from 'vuex'
+    import Sidebar from './Sidebar.vue'
 
     export default {
+        components: {
+            Sidebar
+        },
         data() {
             return {};
         },

@@ -12,6 +12,7 @@ export default new Vuex.Store({
         fixturesByCompetitionSpecial: [],
         ticket: {},
         balance: 0,
+        tickets: []
     },
     getters: {
         competitionsBySports: state => {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
         },
         balance(state) {
             return state.balance
+        },
+        tickets(state) {
+            return state.tickets
         }
     },
     mutations: {
@@ -54,6 +58,9 @@ export default new Vuex.Store({
         },
         SET_BALANCE(state, balance) {
             state.balance = balance
+        },
+        SET_TICKETS(state, tickets) {
+            state.tickets = tickets
         }
     },
     actions: {
@@ -67,9 +74,23 @@ export default new Vuex.Store({
                 commit('SET_FIXTURES', data)
             })
         },
+        getTickets({ commit }) {
+            axios.get('/api/ticket').then(({ data }) => {
+                commit('SET_TICKETS', data)
+            })
+        },
         async getWalletBalance({ commit }) {
             await axios.get('/api/wallet').then(({ data }) => {
                 commit('SET_BALANCE', data)
+            })
+        },
+        updateBalance({ commit }, balance) {
+            axios.post('/api/wallet', { balance }
+            ).then(response => {
+                commit('SET_BALANCE', balance)
+                console.log(response)
+            }).catch(e => {
+                console.log(e)
             })
         },
         updateFixturesWithStatus({ commit, getters }, betOnFixture) {
@@ -175,7 +196,6 @@ export default new Vuex.Store({
         },
         validateTicket({ getters }) {
             const ticket = getters.ticket
-            console.log("TICKET", ticket)
 
             if (!ticket || !ticket.bets || !ticket.bets.length) {
                 console.log("log - no bets")
@@ -232,15 +252,6 @@ export default new Vuex.Store({
 
             axios.post('/api/ticket', formattedTicket
             ).then(response => {
-                console.log(response)
-            }).catch(e => {
-                console.log(e)
-            })
-        },
-        updateBalance({ commit }, balance) {
-            axios.post('/api/wallet', { balance }
-            ).then(response => {
-                commit('SET_BALANCE', balance)
                 console.log(response)
             }).catch(e => {
                 console.log(e)
