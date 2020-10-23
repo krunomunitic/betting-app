@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +33,7 @@ namespace BettingApp.Controllers
             var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
             lastWalletValue.Balance = wallet.Balance;
             _unitOfWork.Wallet.Update(lastWalletValue);
+
             _unitOfWork.Complete();
 
             return Ok();

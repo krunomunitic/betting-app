@@ -1,4 +1,4 @@
-﻿using BettingApp.Models;
+using BettingApp.Models;
 
 namespace BettingApp.Repositories
 {

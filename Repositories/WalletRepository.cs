@@ -1,5 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
 using BettingApp.Data;
+
 using BettingApp.Models;
 
 namespace BettingApp.Repositories
