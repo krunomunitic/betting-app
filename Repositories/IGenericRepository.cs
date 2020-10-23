@@ -9,10 +9,6 @@ namespace BettingApp.Repositories
     {
         T FindById(int id);
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
-        IEnumerable<T> GetComplex(
-            Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
         IEnumerable<T> GetAll();
         void Insert(T entity);
         void Update(T entity);

@@ -37,6 +37,10 @@ namespace BettingApp.Data
             modelBuilder.Entity<FixtureOddsSpecial>()
                 .HasKey(fo => new { fo.FixtureId, fo.OddsId });
 
+            modelBuilder.Entity<Wallet>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getdate()");
+
             // TODO: temp fix, do this for each model separately
             var cascadeFKs = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())

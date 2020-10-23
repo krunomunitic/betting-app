@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BettingApp.Migrations
 {
     [DbContext(typeof(BettingAppContext))]
-    [Migration("20201022220443_InitialCreate")]
+    [Migration("20201023003514_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,11 @@ namespace BettingApp.Migrations
 
                     b.Property<int>("Balance")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.HasKey("Id");
 

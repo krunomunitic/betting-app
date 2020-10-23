@@ -21,8 +21,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            // TODO: no 1, first or default, or another way
-            var wallet = _unitOfWork.Wallet.FindById(1);
+            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
 
             return Ok(wallet.Balance);
         }
@@ -31,9 +30,9 @@ namespace BettingApp.Controllers
         [HttpPost]
         public IActionResult Update([FromBody] Wallet wallet)
         {
-            var userWallet = _unitOfWork.Wallet.FindById(1);
-            userWallet.Balance = wallet.Balance;
-            _unitOfWork.Wallet.Update(userWallet);
+            var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
+            lastWalletValue.Balance = wallet.Balance;
+            _unitOfWork.Wallet.Update(lastWalletValue);
             _unitOfWork.Complete();
 
             return Ok();

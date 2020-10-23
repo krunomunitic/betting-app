@@ -202,6 +202,11 @@ namespace BettingApp.Migrations
                     b.Property<int>("Balance")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
                     b.HasKey("Id");
 
                     b.ToTable("Wallet");

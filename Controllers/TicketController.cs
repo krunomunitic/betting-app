@@ -39,9 +39,12 @@ namespace BettingApp.Controllers
 
             _unitOfWork.Ticket.Insert(new Ticket { Bets = bets, Stake = ticket.Stake });
 
-            var wallet = _unitOfWork.Wallet.FindById(1);
-            wallet.Balance -= ticket.Stake;
-            _unitOfWork.Wallet.Update(wallet);
+            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
+            var newWallet = new Wallet
+            {
+                Balance = wallet.Balance - ticket.Stake
+            };
+            _unitOfWork.Wallet.Insert(newWallet);
 
             _unitOfWork.Complete();
 

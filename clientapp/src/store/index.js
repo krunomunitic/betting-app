@@ -67,8 +67,8 @@ export default new Vuex.Store({
                 commit('SET_FIXTURES', data)
             })
         },
-        getWalletBalance({ commit }) {
-            axios.get('/api/wallet').then(({ data }) => {
+        async getWalletBalance({ commit }) {
+            await axios.get('/api/wallet').then(({ data }) => {
                 commit('SET_BALANCE', data)
             })
         },
@@ -206,7 +206,7 @@ export default new Vuex.Store({
 
             router.push({ name: 'ticket' });
         },
-        betOnTicket({ getters, dispatch }, stake) {
+        async betOnTicket({ getters, dispatch }, stake) {
             const ticket = getters.ticket
 
             if (!ticket || !ticket.bets || !ticket.bets.length) {
@@ -214,10 +214,10 @@ export default new Vuex.Store({
                 return;
             }
 
-            dispatch('getWalletBalance')
+            await dispatch('getWalletBalance')
             const balance = getters.balance
 
-            if (stake > balance) {
+            if (stake >= balance) {
                 console.log("log - not enough balance")
                 return;
             }

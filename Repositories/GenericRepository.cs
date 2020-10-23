@@ -33,35 +33,6 @@ namespace BettingApp.Repositories
             return _context.Set<T>().Where(expression);
         }
 
-        // Complex queries in repository?
-        public virtual IEnumerable<T> GetComplex(
-            Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "")
-        {
-            IQueryable<T> query = _context.Set<T>();
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
-        }
-
         public IEnumerable<T> GetAll()
         {
             return _context.Set<T>().ToList();
