@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BettingApp.Models
@@ -7,5 +7,6 @@ namespace BettingApp.Models
     {
         public int Id { get; set; }
         public int Balance { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

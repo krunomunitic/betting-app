@@ -23,5 +23,12 @@
     <Folder Include="Data\" />
     <Folder Include="Repositories\" />
     <Folder Include="UnitOfWork\" />
+    <Folder Include="clientapp\src\router\" />
+    <Folder Include="clientapp\src\store\" />
+    <Folder Include="clientapp\src\assets\" />
+    <Folder Include="clientapp\src\components\user\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="clientapp\package-lock.json" />
   </ItemGroup>
 </Project>

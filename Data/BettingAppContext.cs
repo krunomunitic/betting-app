@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using BettingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +15,7 @@ namespace BettingApp.Data
         public DbSet<Fixture> Fixtures { get; set; }
         public DbSet<Odds> Odds { get; set; }
         public DbSet<FixtureOdds> FixtureOdds { get; set; }
+        public DbSet<FixtureOddsSpecial> FixtureOddsSpecial { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
@@ -30,12 +31,15 @@ namespace BettingApp.Data
             modelBuilder.Entity<Ticket>().ToTable("Ticket");
             modelBuilder.Entity<Wallet>().ToTable("Wallet");
 
-            modelBuilder.Entity<Fixture>()
-                .Property("Special")
-                .HasDefaultValue(false);
-
             modelBuilder.Entity<FixtureOdds>()
                 .HasKey(fo => new { fo.FixtureId, fo.OddsId });
+
+            modelBuilder.Entity<FixtureOddsSpecial>()
+                .HasKey(fo => new { fo.FixtureId, fo.OddsId });
+
+            modelBuilder.Entity<Wallet>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getdate()");
 
             // TODO: temp fix, do this for each model separately
             var cascadeFKs = modelBuilder.Model.GetEntityTypes()

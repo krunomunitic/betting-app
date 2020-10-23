@@ -1,4 +1,6 @@
-﻿using BettingApp.Data;
+using System.Linq;
+using BettingApp.Data;
+
 using BettingApp.Models;
 
 namespace BettingApp.Repositories
@@ -7,6 +9,11 @@ namespace BettingApp.Repositories
     {
         public WalletRepository(BettingAppContext context) : base(context)
         {
+        }
+
+        public Wallet GetLastWalletValue()
+        {
+            return _context.Wallets.OrderByDescending(w => w.CreatedDate).First();
         }
     }
 }

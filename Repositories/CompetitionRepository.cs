@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BettingApp.Data;
@@ -13,6 +13,7 @@ namespace BettingApp.Repositories
         {
         }
 
+        // TODO: select only whats needed, do grouping here
         public IEnumerable<Competition> GetCompetitionsBySports()
         {
             return _context.Competitions.Include(c=> c.Sport).ToList();
