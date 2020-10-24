@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BettingApp.Models
 {
@@ -6,6 +7,7 @@ namespace BettingApp.Models
     {
         public int Id { get; set; }
         public int Stake { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public List<Bet> Bets { get; set; }
     }

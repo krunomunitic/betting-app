@@ -53,7 +53,8 @@ namespace BettingApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Stake = table.Column<int>(nullable: false)
+                    Stake = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

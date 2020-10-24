@@ -13,7 +13,6 @@ namespace BettingApp.Repositories
         {
         }
 
-        // TODO: select only whats needed, do grouping here
         public IEnumerable<Fixture> GetAllFixtures()
         {
             return _context.Fixtures
@@ -24,10 +23,10 @@ namespace BettingApp.Repositories
                 .ToList();
         }
 
-        // TODO: select only whats needed, do grouping here
         public IEnumerable<Fixture> GetAllFixturesWithSpecialOdds()
         {
-            return _context.Fixtures.Where(f => f.FixtureOddsSpecial.Any())
+            return _context.Fixtures
+                .Where(f => f.FixtureOddsSpecial.Any())
                 .Include(f => f.AwayTeam)
                 .Include(f => f.HomeTeam)
                 .Include(f => f.Competition)

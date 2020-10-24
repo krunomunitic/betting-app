@@ -10,13 +10,24 @@
             <div v-for="bet in ticket.bets" :key='bet.id'>
                 <b-row align-h="between">
                     <b-col cols="8">
-                        {{bet.fixture.date}} {{bet.fixture.homeTeam.name}} - {{bet.fixture.awayTeam.name}} {{bet.fixture.result}}
+                        {{bet.fixtureDate}} {{bet.homeTeamName}} - {{bet.awayTeamName}} {{bet.result}}
                     </b-col>
                     <b-col cols="2">
-                        {{bet.odds.name}} - {{bet.odds.value}}
+                        {{bet.oddsName}} - {{bet.oddsValue}}
                     </b-col>
                 </b-row>
             </div>
+            <b-row align-h="between">
+                <b-col cols="3">
+                    Stakes: {{ ticket.stake }}
+                </b-col>
+                <b-col cols="3">
+                    Odds Total: {{ ticket.oddsCalc.toFixed(2) }}
+                </b-col>
+                <b-col cols="3">
+                    Win: {{ (ticket.stake * ticket.oddsCalc ).toFixed(2) }}
+                </b-col>
+            </b-row>
         </div>
     </div>
 </template>

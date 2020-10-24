@@ -13,6 +13,7 @@ using VueCliMiddleware;
 using BettingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using BettingApp.Repositories;
+using BettingApp.Services;
 using BettingApp.UnitOfWork;
 
 namespace betting_app
@@ -43,6 +44,9 @@ namespace betting_app
             services.AddTransient<ITicketRepository, TicketRepository>();
             services.AddTransient<IBetRepository, BetRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IFixtureService, FixtureService>();
+            services.AddTransient<ICompetitionService, CompetitionService>();
+            services.AddTransient<ITicketService, TicketService>();
 
             // TODO: add to Configuration
             string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=MyStron0Passw6rd";

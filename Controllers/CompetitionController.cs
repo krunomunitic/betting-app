@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BettingApp.UnitOfWork;
+using BettingApp.Services;
 
 namespace BettingApp.Controllers
 {
@@ -11,31 +11,18 @@ namespace BettingApp.Controllers
     [Route("api/[controller]")]
     public class CompetitionController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public CompetitionController(IUnitOfWork unitOfWork)
+        private readonly ICompetitionService _competitionService;
+        public CompetitionController(ICompetitionService competitionService)
         {
-            _unitOfWork = unitOfWork;
+            _competitionService = competitionService;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var competitionsBySports = _unitOfWork.Competition.GetCompetitionsBySports();
+            var competitionsBySports = _competitionService.GetCompetitionDetails();
 
-            // TODO: create a service for this or
-            // do this in repository with Dto model
-            var formatted = competitionsBySports.GroupBy(c => c.Sport)
-                .Select(c => new
-                {
-                    sportName = c.Key.Name,
-                    competitions = c.Select(c => new
-                    {
-                        id = c.Id,
-                        name = c.Name
-                    }).ToList()
-                }).ToList();
-
-            return Ok(formatted);
+            return Ok(competitionsBySports);
         }
     }
 }

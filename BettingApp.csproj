@@ -27,6 +27,8 @@
     <Folder Include="clientapp\src\store\" />
     <Folder Include="clientapp\src\assets\" />
     <Folder Include="clientapp\src\components\user\" />
+    <Folder Include="Services\" />
+    <Folder Include="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="clientapp\package-lock.json" />
