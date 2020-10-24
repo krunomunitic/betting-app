@@ -20,6 +20,7 @@ namespace BettingApp.Services
         public int UpdateWallet(Wallet wallet)
         {
             var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
+
             lastWalletValue.Balance = wallet.Balance;
             _unitOfWork.Wallet.Update(lastWalletValue);
 

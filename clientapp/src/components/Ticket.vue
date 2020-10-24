@@ -58,7 +58,6 @@
                 return ticket
             },
             oddsCalc() {
-                // ticket already got
                 if (!this.ticket || !this.ticket.bets || !this.ticket.bets.length) {
                     this.goBack()
                 }
@@ -67,6 +66,7 @@
                 this.ticket.bets.forEach(bet => {
                     oddsCalc *= bet.odds.value
                 })
+
                 return oddsCalc
             }
         },
@@ -74,7 +74,6 @@
             // ...mapActions(['addBet', 'store']),
             betOnTicket() {
                 this.$store.dispatch('betOnTicket', Number(this.stake))
-                // this.$store.dispatch('addBet', { fixtureId, odds, oddsType })
             },
             goBack() {
                 this.$router.push({ name: 'fixtures' });

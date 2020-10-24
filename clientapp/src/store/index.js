@@ -89,8 +89,8 @@ export default new Vuex.Store({
             ).then(response => {
                 commit('SET_BALANCE', balance)
                 console.log(response)
-            }).catch(e => {
-                console.log(e)
+            }).catch(error => {
+                console.log(error)
             })
         },
         updateFixturesWithStatus({ commit, getters }, betOnFixture) {
@@ -126,6 +126,7 @@ export default new Vuex.Store({
             commit('SET_FIXTURES', { fixturesByCompetition })
 
             // set for special fixtures
+
             const fixturesByCompetitionSpecial = getters.fixturesByCompetitionSpecial
 
             const competitionSpecial = fixturesByCompetitionSpecial.find(competition =>
@@ -217,7 +218,6 @@ export default new Vuex.Store({
 
                 // check if the odds of other bets are over or 1.1
                 const numberOfValidOdds = ticket.bets.filter(bet => bet.odds && bet.odds.value >= 1.1 && !bet.special).length
-                console.log("numberOfValidOdds", numberOfValidOdds, ticket.bets.length - 1)
                 if (numberOfValidOdds < ticket.bets.length - 1) {
                     console.log("log - not all bets are valid")
                     return;
@@ -231,6 +231,11 @@ export default new Vuex.Store({
 
             if (!ticket || !ticket.bets || !ticket.bets.length) {
                 console.log("error - no bets")
+                return;
+            }
+
+            if (Number(this.stake) < 0) {
+                console.log("error")
                 return;
             }
 

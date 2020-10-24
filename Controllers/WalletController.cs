@@ -25,9 +25,14 @@ namespace BettingApp.Controllers
         [HttpPost]
         public IActionResult Update([FromBody] Wallet wallet)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var walletId = _walletService.UpdateWallet(wallet);
 
-            return Ok(walletId);
+            return Ok();
         }
     }
 }

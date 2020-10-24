@@ -26,6 +26,11 @@ namespace BettingApp.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Ticket ticket)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var ticketId = _ticketService.CreateTicket(ticket);
 
             return Ok(ticketId);
