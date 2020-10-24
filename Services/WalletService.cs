@@ -11,7 +11,7 @@ namespace BettingApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public int GetWalletBalance()
+        public decimal GetWalletBalance()
         {
             var wallet = _unitOfWork.Wallet.GetLastWalletValue();
             return wallet.Balance;

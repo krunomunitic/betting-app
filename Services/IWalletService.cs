@@ -4,7 +4,7 @@ namespace BettingApp.Services
 {
     public interface IWalletService
     {
-        public int GetWalletBalance();
+        public decimal GetWalletBalance();
         public int UpdateWallet(Wallet wallet);
     }
 }

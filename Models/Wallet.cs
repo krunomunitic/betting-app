@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BettingApp.Models
 {
@@ -7,8 +8,9 @@ namespace BettingApp.Models
     {
         public int Id { get; set; }
 
-        [Range(0, int.MaxValue)]
-        public int Balance { get; set; }
+        [Column(TypeName = "decimal(9,2)")]
+        [Range(typeof(decimal), "0", "999999999")]
+        public decimal Balance { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

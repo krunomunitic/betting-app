@@ -29,6 +29,7 @@
     <Folder Include="clientapp\src\components\user\" />
     <Folder Include="Services\" />
     <Folder Include="Dtos\" />
+    <Folder Include="ModelValidation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="clientapp\package-lock.json" />
