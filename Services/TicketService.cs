@@ -60,30 +60,5 @@ namespace BettingApp.Services
 
             return 1;
         }
-
-        /*[HttpPost]
-        public IActionResult Create(Ticket ticket)
-        {
-            var bets = new List<Bet>();
-            ticket.Bets.ForEach(b =>
-            {
-                var bet = new Bet { FixtureId = b.FixtureId, OddsId = b.OddsId };
-                bets.Add(bet);
-                _unitOfWork.Bet.Insert(bet);
-            });
-
-            _unitOfWork.Ticket.Insert(new Ticket { Bets = bets, Stake = ticket.Stake });
-
-            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
-            var newWallet = new Wallet
-            {
-                Balance = wallet.Balance - ticket.Stake
-            };
-            _unitOfWork.Wallet.Insert(newWallet);
-
-            _unitOfWork.Complete();
-
-            return Ok();
-        }*/
     }
 }
