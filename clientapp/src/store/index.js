@@ -197,29 +197,28 @@ export default new Vuex.Store({
         },
         validateTicket({ getters }) {
             const ticket = getters.ticket
-
             if (!ticket || !ticket.bets || !ticket.bets.length) {
-                console.log("log - no bets")
+                console.log("error - no bets")
                 return;
             }
 
             const numberOfSpecialFixtures = ticket.bets.filter(bet => bet.special).length
             if (numberOfSpecialFixtures > 1) {
-                console.log("log - only one special allowed")
+                console.log("error - only one special allowed")
                 return;
             }
 
             if (numberOfSpecialFixtures === 1) {
                 // check if there are at least 5 other bets
                 if (ticket.bets.length < 6) {
-                    console.log("log - less than 5 other bets")
+                    console.log("error - less than 5 other bets")
                     return;
                 }
 
                 // check if the odds of other bets are over or 1.1
                 const numberOfValidOdds = ticket.bets.filter(bet => bet.odds && bet.odds.value >= 1.1 && !bet.special).length
                 if (numberOfValidOdds < ticket.bets.length - 1) {
-                    console.log("log - not all bets are valid")
+                    console.log("error - not all bets are valid")
                     return;
                 }
             }
@@ -235,7 +234,7 @@ export default new Vuex.Store({
             }
 
             if (Number(this.stake) < 0) {
-                console.log("error")
+                console.log("error - stake must be higher than 0")
                 return;
             }
 
@@ -243,7 +242,7 @@ export default new Vuex.Store({
             const balance = getters.balance
 
             if (stake >= balance) {
-                console.log("log - not enough balance")
+                console.log("error - not enough balance")
                 return;
             }
 
@@ -254,6 +253,7 @@ export default new Vuex.Store({
                     OddsId: bet.odds.id
                 }))
             }
+            console.log("formattedTicket", formattedTicket)
 
             axios.post('/api/ticket', formattedTicket
             ).then(response => {

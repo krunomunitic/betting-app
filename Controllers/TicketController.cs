@@ -31,9 +31,19 @@ namespace BettingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var ticketId = _ticketService.CreateTicket(ticket);
+            if (!_ticketService.ValidateTicketBets(ticket.Bets))
+            {
+                return BadRequest();
+            }
 
-            return Ok(ticketId);
+            if (!_ticketService.ValidateTicketStake(ticket.Stake))
+            {
+                return BadRequest();
+            }
+
+            _ticketService.CreateTicket(ticket);
+
+            return Ok();
         }
     }
 }

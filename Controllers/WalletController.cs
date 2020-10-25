@@ -30,7 +30,7 @@ namespace BettingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var walletId = _walletService.UpdateWallet(wallet);
+            _walletService.UpdateWallet(wallet);
 
             return Ok();
         }

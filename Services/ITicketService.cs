@@ -7,6 +7,8 @@ namespace BettingApp.Services
     public interface ITicketService
     {
         public IEnumerable<TicketDto> GetTickets();
-        public int CreateTicket(Ticket ticket);
+        public bool ValidateTicketBets(IEnumerable<Bet> bets);
+        public bool ValidateTicketStake(int stake);
+        public void CreateTicket(Ticket ticket);
     }
 }

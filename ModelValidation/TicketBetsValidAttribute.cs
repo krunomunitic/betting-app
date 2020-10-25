@@ -17,7 +17,8 @@ namespace BettingApp.ModelValidation
                 return false;
             }
 
-            // check only fixtures, because of the idea that odds could be reused
+            // check only fixtures,
+            // because of the idea that odds could be reused
             if (bets.GroupBy(b => b.FixtureId).Count() != bets.Count())
             {
                 return false;

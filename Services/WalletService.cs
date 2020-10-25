@@ -17,7 +17,7 @@ namespace BettingApp.Services
             return wallet.Balance;
         }
 
-        public int UpdateWallet(Wallet wallet)
+        public void UpdateWallet(Wallet wallet)
         {
             var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
 
@@ -25,8 +25,6 @@ namespace BettingApp.Services
             _unitOfWork.Wallet.Update(lastWalletValue);
 
             _unitOfWork.Complete();
-
-            return lastWalletValue.Id;
         }
     }
 }

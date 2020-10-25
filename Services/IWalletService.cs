@@ -5,6 +5,6 @@ namespace BettingApp.Services
     public interface IWalletService
     {
         public decimal GetWalletBalance();
-        public int UpdateWallet(Wallet wallet);
+        public void UpdateWallet(Wallet wallet);
     }
 }

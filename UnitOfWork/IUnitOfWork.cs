@@ -10,6 +10,8 @@ namespace BettingApp.UnitOfWork
         IWalletRepository Wallet { get; }
         ITicketRepository Ticket { get; }
         IBetRepository Bet { get; }
+        IFixtureOddsSpecialRepository FixtureOddsSpecial { get; }
+        IOddsRepository Odds { get; }
 
         int Complete();
     }

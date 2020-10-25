@@ -19,14 +19,15 @@ namespace BettingApp.Services
         {
             return new FixturesDto
             {
-                FixturesByCompetition = GetFixturesByCompetition(
+                FixturesByCompetition = GetFixtures(
                     _unitOfWork.Fixtures.GetAllFixtures()),
-                FixturesByCompetitionSpecial = GetFixturesByCompetition(
+                FixturesByCompetitionSpecial = GetFixturesWithSpecialOdds(
                     _unitOfWork.Fixtures.GetAllFixturesWithSpecialOdds())
             };
         }
 
-        private IList<FixturesByCompetitionDto> GetFixturesByCompetition(IEnumerable<Fixture> fixtures)
+        private IList<FixturesByCompetitionDto> GetFixtures(
+            IEnumerable<Fixture> fixtures)
         {
             return fixtures.GroupBy(f => f.Competition)
                 .Select(c => new FixturesByCompetitionDto
@@ -42,6 +43,33 @@ namespace BettingApp.Services
                         AwayTeamName = f.AwayTeam.Name,
                         Result = f.Result,
                         Odds = f.FixtureOdds.ToDictionary(
+                            fo => fo.Odds.Name,
+                            fo => new OddsDto
+                            {
+                                Id = fo.OddsId,
+                                Value = fo.Odds.Value
+                            }),
+                    }).ToList()
+                }).ToList();
+        }
+
+        private IList<FixturesByCompetitionDto> GetFixturesWithSpecialOdds(
+            IEnumerable<Fixture> fixtures)
+        {
+            return fixtures.GroupBy(f => f.Competition)
+                .Select(c => new FixturesByCompetitionDto
+                {
+                    CompetitionName = c.Key.Name,
+                    Fixtures = c.Select(f => new FixtureDto
+                    {
+                        Id = f.Id,
+                        Date = f.Date,
+                        HomeTeamId = f.HomeTeamId,
+                        HomeTeamName = f.HomeTeam.Name,
+                        AwayTeamId = f.AwayTeamId,
+                        AwayTeamName = f.AwayTeam.Name,
+                        Result = f.Result,
+                        Odds = f.FixtureOddsSpecial.ToDictionary(
                             fo => fo.Odds.Name,
                             fo => new OddsDto
                             {
