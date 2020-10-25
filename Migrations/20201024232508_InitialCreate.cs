@@ -66,7 +66,7 @@ namespace BettingApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Balance = table.Column<int>(nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(9,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>

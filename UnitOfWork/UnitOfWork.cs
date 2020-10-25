@@ -13,6 +13,8 @@ namespace BettingApp.UnitOfWork
         public IWalletRepository Wallet { get; private set; }
         public ITicketRepository Ticket { get; private set; }
         public IBetRepository Bet { get; private set; }
+        public IFixtureOddsSpecialRepository FixtureOddsSpecial { get; private set; }
+        public IOddsRepository Odds { get; private set; }
 
         public UnitOfWork(BettingAppContext context)
         {
@@ -22,6 +24,8 @@ namespace BettingApp.UnitOfWork
             Wallet = new WalletRepository(_context);
             Ticket = new TicketRepository(_context);
             Bet = new BetRepository(_context);
+            FixtureOddsSpecial = new FixtureOddsSpecialRepository(_context);
+            Odds = new OddsRepository(_context);
         }
 
         public int Complete()

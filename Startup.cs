@@ -13,6 +13,7 @@ using VueCliMiddleware;
 using BettingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using BettingApp.Repositories;
+using BettingApp.Services;
 using BettingApp.UnitOfWork;
 
 namespace betting_app
@@ -36,13 +37,11 @@ namespace betting_app
             });
 
             // Transient lifetime services are created each time they're requested from the service container
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<IFixtureRepository, FixtureRepository>();
-            services.AddTransient<ICompetitionRepository, CompetitionRepository>();
-            services.AddTransient<IWalletRepository, WalletRepository>();
-            services.AddTransient<ITicketRepository, TicketRepository>();
-            services.AddTransient<IBetRepository, BetRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IFixtureService, FixtureService>();
+            services.AddTransient<ICompetitionService, CompetitionService>();
+            services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<IWalletService, WalletService>();
 
             // TODO: add to Configuration
             string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=MyStron0Passw6rd";

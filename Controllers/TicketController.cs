@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BettingApp.UnitOfWork;
+using BettingApp.Services;
 using BettingApp.Models;
 
 namespace BettingApp.Controllers
@@ -12,16 +9,16 @@ namespace BettingApp.Controllers
     [Route("api/[controller]")]
     public class TicketController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public TicketController(IUnitOfWork unitOfWork)
+        private readonly ITicketService _ticketService;
+        public TicketController(ITicketService ticketService)
         {
-            _unitOfWork = unitOfWork;
+            _ticketService = ticketService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var tickets = _unitOfWork.Ticket.GetAllTicketsWithDetails();
+            var tickets = _ticketService.GetTickets();
 
             return Ok(tickets);
         }
@@ -29,24 +26,22 @@ namespace BettingApp.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Ticket ticket)
         {
-            var bets = new List<Bet>();
-            ticket.Bets.ForEach(b =>
+            if (!ModelState.IsValid)
             {
-                var bet = new Bet { FixtureId = b.FixtureId, OddsId = b.OddsId };
-                bets.Add(bet);
-                _unitOfWork.Bet.Insert(bet);
-            });
+                return BadRequest(ModelState);
+            }
 
-            _unitOfWork.Ticket.Insert(new Ticket { Bets = bets, Stake = ticket.Stake });
-
-            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
-            var newWallet = new Wallet
+            if (!_ticketService.ValidateTicketBets(ticket.Bets))
             {
-                Balance = wallet.Balance - ticket.Stake
-            };
-            _unitOfWork.Wallet.Insert(newWallet);
+                return BadRequest();
+            }
 
-            _unitOfWork.Complete();
+            if (!_ticketService.ValidateTicketStake(ticket.Stake))
+            {
+                return BadRequest();
+            }
+
+            _ticketService.CreateTicket(ticket);
 
             return Ok();
         }

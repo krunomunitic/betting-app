@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BettingApp.UnitOfWork;
+using BettingApp.Services;
 using BettingApp.Models;
 
 namespace BettingApp.Controllers
@@ -12,29 +8,29 @@ namespace BettingApp.Controllers
     [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public WalletController(IUnitOfWork unitOfWork)
+        private readonly IWalletService _walletService;
+        public WalletController(IWalletService walletService)
         {
-            _unitOfWork = unitOfWork;
+            _walletService = walletService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
+            var balance = _walletService.GetWalletBalance();
 
-            return Ok(wallet.Balance);
+            return Ok(balance);
         }
 
-        // TODO: refactor this (first or default...)
         [HttpPost]
         public IActionResult Update([FromBody] Wallet wallet)
         {
-            var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
-            lastWalletValue.Balance = wallet.Balance;
-            _unitOfWork.Wallet.Update(lastWalletValue);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            _unitOfWork.Complete();
+            _walletService.UpdateWallet(wallet);
 
             return Ok();
         }

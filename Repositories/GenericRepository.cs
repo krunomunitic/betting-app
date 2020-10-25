@@ -9,18 +9,16 @@ namespace BettingApp.Repositories
 {
     public class GenericRepository<T>: IGenericRepository<T> where T : class
     {
-        // TODO Change Sync to Async
         // async vs sync https://stackoverflow.com/questions/25086866/why-does-the-ef-6-tutorial-use-asynchronous-calls
 
-        // Class variables are declared for the database context and for the entity set that the repository is instantiated for
+        // Class variables is declared for the database context
         protected readonly BettingAppContext _context;
-        // internal DbSet<T> dbSet;
 
-        // The constructor accepts a database context instance and initializes the entity set variable
+        // The constructor accepts a database context instance and initializes
+        //the entity set variable
         public GenericRepository(BettingAppContext context)
         {
             _context = context;
-            // this.dbSet = context.Set<T>();
         }
 
         public T FindById(int id)
