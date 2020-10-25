@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BettingApp.Models;
 
 namespace BettingApp.Dtos
 {

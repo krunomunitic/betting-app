@@ -1,5 +1,4 @@
-﻿using System;
-namespace BettingApp.Dtos
+﻿namespace BettingApp.Dtos
 {
     public class OddsDto
     {

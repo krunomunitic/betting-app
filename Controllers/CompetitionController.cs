@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BettingApp.Services;
+using BettingApp.Dtos;
 
 namespace BettingApp.Controllers
 {
@@ -20,7 +18,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var competitionsBySports = _competitionService.GetCompetitionDetails();
+            IEnumerable<CompetitionSportsDto> competitionsBySports = _competitionService.GetCompetitionDetails();
 
             return Ok(competitionsBySports);
         }

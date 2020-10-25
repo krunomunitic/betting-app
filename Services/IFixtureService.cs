@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BettingApp.Dtos;
+﻿using BettingApp.Dtos;
 
 namespace BettingApp.Services
 {

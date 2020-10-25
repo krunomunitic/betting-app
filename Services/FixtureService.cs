@@ -1,8 +1,8 @@
-﻿using BettingApp.UnitOfWork;
+﻿using System.Linq;
 using System.Collections.Generic;
+using BettingApp.UnitOfWork;
 using BettingApp.Dtos;
 using BettingApp.Models;
-using System.Linq;
 
 namespace BettingApp.Services
 {

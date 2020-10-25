@@ -17,7 +17,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var balance = _walletService.GetWalletBalance();
+            decimal balance = _walletService.GetWalletBalance();
 
             return Ok(balance);
         }

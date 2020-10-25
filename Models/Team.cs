@@ -1,5 +1,4 @@
-﻿using System;
-namespace BettingApp.Models
+﻿namespace BettingApp.Models
 {
     public class Team
     {

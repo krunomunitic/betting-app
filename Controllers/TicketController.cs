@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using BettingApp.Services;
 using BettingApp.Models;
+using BettingApp.Dtos;
 
 namespace BettingApp.Controllers
 {
@@ -18,7 +19,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var tickets = _ticketService.GetTickets();
+            IEnumerable<TicketDto> tickets = _ticketService.GetTickets();
 
             return Ok(tickets);
         }

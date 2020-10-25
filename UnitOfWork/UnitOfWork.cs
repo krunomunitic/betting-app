@@ -1,5 +1,4 @@
-﻿using System;
-using BettingApp.Data;
+﻿using BettingApp.Data;
 using BettingApp.Repositories;
 
 namespace BettingApp.UnitOfWork

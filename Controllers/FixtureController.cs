@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using BettingApp.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
 using BettingApp.Services;
+using BettingApp.Dtos;
 
 namespace BettingApp.Controllers
 {
@@ -21,7 +17,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var fixtures = _fixtureService.GetFixtures();
+            FixturesDto fixtures = _fixtureService.GetFixtures();
             return Ok(fixtures);
         }
     }

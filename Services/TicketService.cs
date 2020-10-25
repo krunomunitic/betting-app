@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using BettingApp.UnitOfWork;
 using BettingApp.Dtos;
@@ -36,6 +35,32 @@ namespace BettingApp.Services
                     Result = b.Fixture.Result
                 }).ToList(),
             }).ToList();
+        }
+
+        public void CreateTicket(Ticket ticket)
+        {
+            List<Bet> bets = new List<Bet>();
+            ticket.Bets.ForEach(b =>
+            {
+                Bet bet = new Bet
+                { FixtureId = b.FixtureId, OddsId = b.OddsId };
+
+                bets.Add(bet);
+                _unitOfWork.Bet.Insert(bet);
+            });
+
+            _unitOfWork.Ticket
+                .Insert(new Ticket { Bets = bets, Stake = ticket.Stake });
+
+            Wallet wallet = _unitOfWork.Wallet.GetLastWalletValue();
+            Wallet newWallet = new Wallet
+            {
+                Balance = wallet.Balance - (decimal)(ticket.Stake * 0.95)
+            };
+
+            _unitOfWork.Wallet.Insert(newWallet);
+
+            _unitOfWork.Complete();
         }
 
         public bool ValidateTicketBets(IEnumerable<Bet> bets)
@@ -79,32 +104,6 @@ namespace BettingApp.Services
             Wallet wallet = _unitOfWork.Wallet.GetLastWalletValue();
 
             return wallet.Balance >= stake;
-        }
-
-        public void CreateTicket(Ticket ticket)
-        {
-            List<Bet> bets = new List<Bet>();
-            ticket.Bets.ForEach(b =>
-            {
-                var bet = new Bet
-                { FixtureId = b.FixtureId, OddsId = b.OddsId };
-
-                bets.Add(bet);
-                _unitOfWork.Bet.Insert(bet);
-            });
-
-            _unitOfWork.Ticket
-                .Insert(new Ticket { Bets = bets, Stake = ticket.Stake });
-
-            Wallet wallet = _unitOfWork.Wallet.GetLastWalletValue();
-            Wallet newWallet = new Wallet
-            {
-                Balance = wallet.Balance - (decimal)(ticket.Stake * 0.95)
-            };
-
-            _unitOfWork.Wallet.Insert(newWallet);
-
-            _unitOfWork.Complete();
         }
     }
 }

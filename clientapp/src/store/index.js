@@ -253,7 +253,6 @@ export default new Vuex.Store({
                     OddsId: bet.odds.id
                 }))
             }
-            console.log("formattedTicket", formattedTicket)
 
             axios.post('/api/ticket', formattedTicket
             ).then(response => {

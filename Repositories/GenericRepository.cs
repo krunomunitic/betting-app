@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using BettingApp.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace BettingApp.Repositories
 {

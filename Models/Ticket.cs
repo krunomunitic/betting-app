@@ -13,7 +13,7 @@ namespace BettingApp.Models
             ErrorMessage = "The Stake must be higher than 0")]
         public int Stake { get; set; }
 
-        [TicketBetsValid]
+        [TicketBetsValidation]
         public List<Bet> Bets { get; set; }
     }
 }

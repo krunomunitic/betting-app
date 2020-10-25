@@ -1,9 +1,9 @@
-﻿using System;
-namespace BettingApp.Models
+﻿namespace BettingApp.Models
 {
     public class Bet
     {
         public int Id { get; set; }
+
         public int OddsId { get; set; }
         public Odds Odds { get; set; }
 

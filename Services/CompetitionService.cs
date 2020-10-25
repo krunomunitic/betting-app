@@ -1,7 +1,8 @@
-﻿using BettingApp.UnitOfWork;
+﻿using System.Linq;
 using System.Collections.Generic;
+using BettingApp.UnitOfWork;
 using BettingApp.Dtos;
-using System.Linq;
+using BettingApp.Models;
 
 namespace BettingApp.Services
 {
@@ -16,10 +17,9 @@ namespace BettingApp.Services
 
         public IEnumerable<CompetitionSportsDto> GetCompetitionDetails()
         {
-            var _competitionsBySports = _unitOfWork.Competition.GetCompetitionsBySports();
+            IEnumerable<Competition> competitionsBySports = _unitOfWork.Competition.GetCompetitionsBySports();
 
-            // TODO: add automapper
-            var competitionsBySports = _competitionsBySports.GroupBy(c => c.Sport)
+            return competitionsBySports.GroupBy(c => c.Sport)
                 .Select(c => new CompetitionSportsDto
                 {
                     SportName = c.Key.Name,
@@ -29,8 +29,6 @@ namespace BettingApp.Services
                         Name = c.Name
                     }).ToList()
                 }).ToList();
-
-            return competitionsBySports;
         }
     }
 }

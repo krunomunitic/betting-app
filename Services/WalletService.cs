@@ -13,13 +13,13 @@ namespace BettingApp.Services
 
         public decimal GetWalletBalance()
         {
-            var wallet = _unitOfWork.Wallet.GetLastWalletValue();
+            Wallet wallet = _unitOfWork.Wallet.GetLastWalletValue();
             return wallet.Balance;
         }
 
         public void UpdateWallet(Wallet wallet)
         {
-            var lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
+            Wallet lastWalletValue = _unitOfWork.Wallet.GetLastWalletValue();
 
             lastWalletValue.Balance = wallet.Balance;
             _unitOfWork.Wallet.Update(lastWalletValue);
