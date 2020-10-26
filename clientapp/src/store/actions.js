@@ -55,6 +55,7 @@ export const actions = {
         }
 
         const betExist = ticket.bets.find(b => b.fixtureId === bet.fixtureId);
+
         if (betExist) {
             betExist.odds = bet.odds
             betExist.oddsType = bet.oddsType
@@ -96,7 +97,7 @@ export const actions = {
             return;
         }
 
-        const numberOfSpecialFixtures = ticket.bets.filter(bet => bet.special).length
+        const numberOfSpecialFixtures = ticket.bets.filter(bet => bet.special === true).length
         if (numberOfSpecialFixtures > 1) {
             console.log("error - only one special allowed")
             return;
@@ -148,9 +149,9 @@ export const actions = {
             }))
         }
 
+        commit('SET_TICKET', {})
         axios.post('/api/ticket', formattedTicket
         ).then(response => {
-            commit('SET_TICKET', {})
             console.log(response)
         }).catch(e => {
             console.log(e)

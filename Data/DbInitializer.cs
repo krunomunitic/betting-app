@@ -37,7 +37,7 @@ namespace BettingApp.Data
                 new Competition { Name = "La Liga", SportId = sports.Single(s=> s.Name == "Football").Id },
                 new Competition { Name = "Champions League", SportId = sports.Single(s=> s.Name == "Football").Id },
                 new Competition { Name = "NBA", SportId = sports.Single(s=> s.Name == "Basketball").Id },
-                new Competition { Name = "Aba League", SportId = sports.Single(s=> s.Name == "Basketball").Id },
+                new Competition { Name = "EuroLeague", SportId = sports.Single(s=> s.Name == "Basketball").Id },
                 new Competition { Name = "NFL", SportId = sports.Single(s=> s.Name == "American football").Id },
             };
 
@@ -111,6 +111,20 @@ namespace BettingApp.Data
                 new Odds { Name = "X1", Value = 1.15M },
                 new Odds { Name = "X2", Value = 2.35M },
 
+                new Odds { Name = "1", Value = 1.50M },
+                new Odds { Name = "2", Value = 3.45M },
+                new Odds { Name = "X", Value = 2.50M },
+                new Odds { Name = "12", Value = 1.25M },
+                new Odds { Name = "X1", Value = 1.35M },
+                new Odds { Name = "X2", Value = 1.55M },
+
+                new Odds { Name = "1", Value = 1.50M },
+                new Odds { Name = "2", Value = 8.45M },
+                new Odds { Name = "X", Value = 1.70M },
+                new Odds { Name = "12", Value = 1.10M },
+                new Odds { Name = "X1", Value = 1.25M },
+                new Odds { Name = "X2", Value = 1.55M },
+
                 new Odds { Name = "1", Value = 1.45M },
                 new Odds { Name = "2", Value = 2.10M },
                 new Odds { Name = "X", Value = 2.00M },
@@ -148,13 +162,16 @@ namespace BettingApp.Data
                 new Fixture { Date = DateTime.Parse("2020-11-12 14:30"), HomeTeamId = teams.Single(t=> t.Name == "Liverpool").Id, AwayTeamId = teams.Single(t => t.Name == "Everton").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
                 new Fixture { Date = DateTime.Parse("2020-11-13 18:15"), HomeTeamId = teams.Single(t=> t.Name == "Atletico Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Sevilla").Id,  CompetitionId =  competitions.Single(s=> s.Name == "La Liga").Id},
                 new Fixture { Date = DateTime.Parse("2020-11-13 01:30"), HomeTeamId = teams.Single(t=> t.Name == "LA Lakers").Id, AwayTeamId = teams.Single(t => t.Name == "Miami Heat").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NBA").Id},
-                new Fixture { Date = DateTime.Parse("2020-10-10 20:15"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-14 00:30"), HomeTeamId = teams.Single(t=> t.Name == "Dallas Cowboys").Id, AwayTeamId = teams.Single(t => t.Name == "Seattle Seahawks").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NFL").Id},
+                new Fixture { Date = DateTime.Parse("2020-10-10 20:15"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Barcelona").Id,  CompetitionId =  competitions.Single(s=> s.Name == "EuroLeague").Id},
+                new Fixture { Date = DateTime.Parse("2020-10-10 20:15"), HomeTeamId = teams.Single(t=> t.Name == "Villareal").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id},
             };
 
             foreach (Fixture fixture in fixtures)
             {
                 context.Fixtures.Add(fixture);
             }
+
             context.SaveChanges();
 
             int startIndex = 0;

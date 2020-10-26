@@ -15,6 +15,10 @@ dotnet ef database update
 dotnet run
 
 ```
+## Prerequisites
+- Node.js
+- Npm
+- ASP.NET core
 
 ## About
 
