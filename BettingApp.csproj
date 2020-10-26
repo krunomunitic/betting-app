@@ -30,6 +30,8 @@
     <Folder Include="Services\" />
     <Folder Include="Dtos\" />
     <Folder Include="ModelValidation\" />
+    <Folder Include="clientapp\src\style\" />
+    <Folder Include="clientapp\src\config\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="clientapp\package-lock.json" />

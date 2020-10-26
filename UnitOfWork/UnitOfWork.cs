@@ -8,7 +8,6 @@ namespace BettingApp.UnitOfWork
         protected readonly BettingAppContext _context;
 
         public IFixtureRepository Fixtures { get; private set; }
-        public ICompetitionRepository Competition { get; private set; }
         public IWalletRepository Wallet { get; private set; }
         public ITicketRepository Ticket { get; private set; }
         public IBetRepository Bet { get; private set; }
@@ -19,7 +18,6 @@ namespace BettingApp.UnitOfWork
         {
             _context = context;
             Fixtures = new FixtureRepository(_context);
-            Competition = new CompetitionRepository(_context);
             Wallet = new WalletRepository(_context);
             Ticket = new TicketRepository(_context);
             Bet = new BetRepository(_context);

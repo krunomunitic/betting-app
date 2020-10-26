@@ -55,7 +55,7 @@ namespace BettingApp.Services
             Wallet wallet = _unitOfWork.Wallet.GetLastWalletValue();
             Wallet newWallet = new Wallet
             {
-                Balance = wallet.Balance - (decimal)(ticket.Stake * 0.95)
+                Balance = wallet.Balance - (decimal)(ticket.Stake * 1.05)
             };
 
             _unitOfWork.Wallet.Insert(newWallet);

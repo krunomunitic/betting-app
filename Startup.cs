@@ -39,12 +39,10 @@ namespace betting_app
             // Transient lifetime services are created each time they're requested from the service container
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IFixtureService, FixtureService>();
-            services.AddTransient<ICompetitionService, CompetitionService>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IWalletService, WalletService>();
 
-            // TODO: add to Configuration
-            string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=MyStron0Passw6rd";
+            var connectionString = Configuration.GetConnectionString("BettingApp");
             services.AddDbContext<BettingAppContext>(options => options.UseSqlServer(connectionString));
         }
 

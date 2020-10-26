@@ -17,7 +17,7 @@ namespace BettingApp.Repositories
             return _context.Fixtures
                 .Include(f => f.AwayTeam)
                 .Include(f => f.HomeTeam)
-                .Include(f => f.Competition)
+                .Include(f => f.Competition).ThenInclude(c => c.Sport)
                 .Include(f => f.FixtureOdds).ThenInclude(fo => fo.Odds)
                 .ToList();
         }
@@ -28,7 +28,7 @@ namespace BettingApp.Repositories
                 .Where(f => f.FixtureOddsSpecial.Any())
                 .Include(f => f.AwayTeam)
                 .Include(f => f.HomeTeam)
-                .Include(f => f.Competition)
+                .Include(f => f.Competition).ThenInclude(c => c.Sport)
                 .Include(f => f.FixtureOddsSpecial).ThenInclude(fo => fo.Odds)
                 .ToList();
         }
