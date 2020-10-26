@@ -143,14 +143,12 @@ namespace BettingApp.Data
 
             var fixtures = new Fixture[]
             {
-                // TODO: set now plus a few days
-                new Fixture { Date = DateTime.Parse("2020-11-11"), HomeTeamId = teams.Single(t=> t.Name == "Arsenal").Id, AwayTeamId = teams.Single(t => t.Name == "Chelsea").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-12"), HomeTeamId = teams.Single(t=> t.Name == "Liverpool").Id, AwayTeamId = teams.Single(t => t.Name == "Everton").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "Atletico Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Sevilla").Id,  CompetitionId =  competitions.Single(s=> s.Name == "La Liga").Id},
-                new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "LA Lakers").Id, AwayTeamId = teams.Single(t => t.Name == "Miami Heat").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NBA").Id},
-                // TODO: set now minus few days, already played
-                new Fixture { Date = DateTime.Parse("2020-10-10"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-11 20:30"), HomeTeamId = teams.Single(t=> t.Name == "Arsenal").Id, AwayTeamId = teams.Single(t => t.Name == "Chelsea").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-12 21:05"), HomeTeamId = teams.Single(t=> t.Name == "Manchester United").Id, AwayTeamId = teams.Single(t => t.Name == "Manchester City").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-12 14:30"), HomeTeamId = teams.Single(t=> t.Name == "Liverpool").Id, AwayTeamId = teams.Single(t => t.Name == "Everton").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Premier League").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-13 18:15"), HomeTeamId = teams.Single(t=> t.Name == "Atletico Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Sevilla").Id,  CompetitionId =  competitions.Single(s=> s.Name == "La Liga").Id},
+                new Fixture { Date = DateTime.Parse("2020-11-13 01:30"), HomeTeamId = teams.Single(t=> t.Name == "LA Lakers").Id, AwayTeamId = teams.Single(t => t.Name == "Miami Heat").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NBA").Id},
+                new Fixture { Date = DateTime.Parse("2020-10-10 20:15"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id},
             };
 
             foreach (Fixture fixture in fixtures)

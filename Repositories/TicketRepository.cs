@@ -11,7 +11,6 @@ namespace BettingApp.Repositories
         {
         }
 
-        // TODO: select only whats needed
         public IEnumerable<Ticket> GetAllTicketsWithDetails()
         {
             return _context.Tickets

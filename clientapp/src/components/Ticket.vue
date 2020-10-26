@@ -77,7 +77,6 @@
             }
         },
         methods: {
-            // ...mapActions(['addBet', 'store']),
             betOnTicket() {
                 this.$store.dispatch('betOnTicket', Number(this.stake))
             },
