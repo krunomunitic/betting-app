@@ -43,8 +43,7 @@ namespace betting_app
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IWalletService, WalletService>();
 
-            // TODO: add to Configuration
-            string connectionString = "Server=localhost;Database=BettingAppDB;User Id=sa;Password=MyStron0Passw6rd";
+            var connectionString = Configuration.GetConnectionString("BettingApp");
             services.AddDbContext<BettingAppContext>(options => options.UseSqlServer(connectionString));
         }
 

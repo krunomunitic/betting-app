@@ -1,0 +1,58 @@
+﻿@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
+.bg-info {
+    background-color: #437fc7 !important;
+}
+
+.fixtures {
+    margin: 2rem;
+    border-radius: 6px;
+    padding: 1.5rem;
+    background-color: #f3f3f3;
+
+    &__special {
+        background-color: #edf6ff;
+    }
+
+    &__competition {
+        margin-bottom: 40px;
+
+        &__fixture {
+            margin: 10px;
+            color: #5c5f58;
+
+            &__info {
+                padding: 6px;
+            }
+
+            &__odds {
+                display: flex;
+
+                &__single {
+                    min-width: 86px;
+                }
+
+                & button {
+                    width: 56px;
+                    color: #437fc7;
+                    border-color: #437fc7;
+                }
+
+                &__remove {
+                    color: #dc3545 !important;
+                    border-color: #dc3545 !important;
+
+                    &:hover {
+                        color: white !important;
+                    }
+                }
+
+                &__name {
+                    width: 56px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

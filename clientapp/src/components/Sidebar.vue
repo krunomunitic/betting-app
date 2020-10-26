@@ -12,15 +12,12 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-    data() {
-        return {};
-        },
-        mounted() {
-            this.$store.dispatch('getCompetitionsBySports')
-        },
-        computed: {
-            ...mapGetters(['competitionsBySports'])
-        }
+    mounted() {
+        this.$store.dispatch('getCompetitionsBySports')
+    },
+    computed: {
+        ...mapGetters(['competitionsBySports'])
+    }
 }
 </script>
 

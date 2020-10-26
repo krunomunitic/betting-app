@@ -17,7 +17,5 @@ export default {
 </script>
 
 <style lang="scss">
-    .active {
-        background-color: blue !important;
-    }
+    @import './style';
 </style>
