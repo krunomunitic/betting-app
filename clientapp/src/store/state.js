@@ -1,5 +1,4 @@
 ﻿export const state = {
-    competitionsBySports: [],
     fixturesByCompetition: [],
     fixturesByCompetitionSpecial: [],
     ticket: {},

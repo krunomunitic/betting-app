@@ -2,11 +2,6 @@
 import axios from 'axios';
 
 export const actions = {
-    getCompetitionsBySports({ commit }) {
-        axios.get('/api/competition').then(({ data }) => {
-            commit('SET_COMPETITIONBYSPORTS', data)
-        })
-    },
     getFixtures({ commit }) {
         axios.get('/api/fixture').then(({ data }) => {
             commit('SET_FIXTURES', data)

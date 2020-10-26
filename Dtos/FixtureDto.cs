@@ -7,8 +7,8 @@ namespace BettingApp.Dtos
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public int HomeTeamId { get; set; }
-        public int AwayTeamId { get; set; }
+        public string SportName { get; set; }
+        public string CompetitionName { get; set; }
         public string HomeTeamName { get; set; }
         public string AwayTeamName { get; set; }
         public string Result { get; set; }

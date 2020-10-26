@@ -1,6 +1,5 @@
 <template>
     <div>
-        <sidebar />
         <b-row align-h="between" class="fixtures fixtures__special">
             <b-col cols="12">
                 <h2>Special Offers</h2>
@@ -120,7 +119,8 @@
             </b-col>
         </b-row>
 
-        <b-button squared v-if="ticket && ticket.bets && ticket.bets.length"
+        <b-button class="fixtures__place-bet"
+                  v-if="ticket && ticket.bets && ticket.bets.length"
                   @click="validateTicket()">
             Place Bet
         </b-button>
@@ -128,15 +128,12 @@
 </template>
 
 <script>
+    import _ from 'lodash'
     import moment from 'moment'
     import { mapGetters } from 'vuex'
-    import Sidebar from './Sidebar.vue'
     import { oddsTypes } from '../config/oddsTypes'
 
     export default {
-        components: {
-            Sidebar
-        },
         data() {
             return {
                 oddsTypes
@@ -146,7 +143,24 @@
             this.$store.dispatch('getFixtures')
         },
         computed: {
-            ...mapGetters(['fixturesByCompetition', 'fixturesByCompetitionSpecial', 'ticket'])
+            fixturesFormatted() {
+                const fixtures = this.$store.getters.fixtures;
+
+                const fixturesFormatted = []
+                fixtures.forEach(f => {
+                    const tempFixturesFormatted = _.mapValues(_.groupBy(f, 'SportName'), flist => flist.map(fixture => _.omit(fixture, 'SportName')))
+
+                    tempFixturesFormatted.forEach(tf => {
+                        fixturesFormatted.push(_.mapValues(_.groupBy(tf, 'CompetitionName'),
+                            fflist => fflist.map(fixture => _.omit(fixture, 'CompetitionName'))))
+                    })
+                })
+
+                console.log("11111111111111111111", fixturesFormatted)
+
+                return fixturesFormatted
+            },
+            ...mapGetters(['ticket'])
         },
         methods: {
             addBet({ id, date, homeTeamName, awayTeamName }, odds, oddsType, special = false) {

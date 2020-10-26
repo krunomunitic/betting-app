@@ -17,7 +17,7 @@ namespace BettingApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            FixturesDto fixtures = _fixtureService.GetFixtures();
+            FixturesDto[] fixtures = _fixtureService.GetFixtures();
             return Ok(fixtures);
         }
     }

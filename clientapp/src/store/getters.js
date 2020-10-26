@@ -1,14 +1,8 @@
 ﻿export const getters = {
-    competitionsBySports: state => {
-        return state.competitionsBySports
+    fixtures: state => {
+        return state.fixtures
     },
-    fixturesByCompetition: state => {
-        return state.fixturesByCompetition
-    },
-        fixturesByCompetitionSpecial: state => {
-            return state.fixturesByCompetitionSpecial
-        },
-            ticket(state) {
+    ticket(state) {
         return state.ticket;
     },
     balance(state) {

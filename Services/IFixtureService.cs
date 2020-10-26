@@ -4,6 +4,6 @@ namespace BettingApp.Services
 {
     public interface IFixtureService
     {
-        public FixturesDto GetFixtures();
+        public FixturesDto[] GetFixtures();
     };
 }
