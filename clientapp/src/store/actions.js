@@ -22,6 +22,7 @@ export const actions = {
         ).then(response => {
             commit('SET_BALANCE', balance)
             console.log(response)
+            router.push({ name: 'fixtures' });
         }).catch(error => {
             console.log(error)
         })
@@ -118,7 +119,7 @@ export const actions = {
 
         router.push({ name: 'ticket' });
     },
-    async betOnTicket({ getters, dispatch }, stake) {
+    async betOnTicket({ commit, getters, dispatch }, stake) {
         const ticket = getters.ticket
 
         if (!ticket || !ticket.bets || !ticket.bets.length) {
@@ -149,6 +150,7 @@ export const actions = {
 
         axios.post('/api/ticket', formattedTicket
         ).then(response => {
+            commit('SET_TICKET', {})
             console.log(response)
         }).catch(e => {
             console.log(e)

@@ -11,10 +11,6 @@
     padding: 1.5rem;
     background-color: #f3f3f3;
 
-    &__special {
-        background-color: #edf6ff;
-    }
-
     &__competition {
         margin-bottom: 40px;
 
@@ -69,5 +65,39 @@
         &:hover {
             background-color: #437fc7;
         }
+    }
+}
+
+.ticket {
+    &__bet-calc {
+        display: grid;
+        color: #5c5f58;
+        font-weight: bold;
+    }
+
+    &__buttons {
+        & button {
+            float: right;
+        }
+
+        &__bet {
+            background-color: #437fc7;
+
+            &:hover {
+                background-color: #104c94 !important;
+            }
+        }
+
+        &__go-back {
+            color: #437fc7;
+            border-color: #437fc7;
+            margin-right: 20px;
+        }
+    }
+}
+
+.wallet {
+    & button {
+        margin-top: 20px;
     }
 }

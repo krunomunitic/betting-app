@@ -79,7 +79,8 @@
     </div>
 </template>
 
-<script>import _ from 'lodash'
+<script>
+    import _ from 'lodash'
     import moment from 'moment'
     import { oddsTypes } from '../config/oddsTypes'
     import { sports } from '../config/sportsCompetitions'
@@ -140,7 +141,7 @@
         },
         filters: {
             moment(date) {
-                return moment(date).format('HH:mm');
+                return moment(date).format('YYYY-MM-DD HH:mm');
             },
         }
     }</script>
