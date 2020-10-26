@@ -12,6 +12,8 @@ namespace BettingApp.Repositories
         {
         }
 
+        // TODO: get all in one DB get
+
         public IEnumerable<Fixture> GetAllFixtures()
         {
             return _context.Fixtures

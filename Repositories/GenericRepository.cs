@@ -9,6 +9,7 @@ namespace BettingApp.Repositories
     public class GenericRepository<T>: IGenericRepository<T> where T : class
     {
         // async vs sync https://stackoverflow.com/questions/25086866/why-does-the-ef-6-tutorial-use-asynchronous-calls
+        // TODO: change all to async
 
         // Class variables is declared for the database context
         protected readonly BettingAppContext _context;

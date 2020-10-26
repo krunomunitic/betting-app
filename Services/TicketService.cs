@@ -22,7 +22,8 @@ namespace BettingApp.Services
             return tickets.Select(t => new TicketDto
             {
                 Stake = t.Stake,
-                OddsCalc = t.Bets.Aggregate((decimal)1, (total, value) => total * value.Odds.Value ?? 1),
+                OddsCalc = t.Bets
+                    .Aggregate((decimal)1, (total, value) => total * value.Odds.Value ?? 1),
                 Bets = t.Bets.Select(b => new BetDto
                 {
                     FixtureDate = b.Fixture.Date,

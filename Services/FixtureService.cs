@@ -16,6 +16,9 @@ namespace BettingApp.Services
 
         public FixturesDto[] GetFixtures()
         {
+            // TODO: get all in one DB get then differentiate to special and
+            // regular
+
             return new FixturesDto[]
             {
                 new FixturesDto
@@ -27,8 +30,7 @@ namespace BettingApp.Services
                 new FixturesDto
                 {
                     Name = "Regular Offers",
-                    Fixtures = GetFixtures(
-                        _unitOfWork.Fixtures.GetAllFixtures())
+                    Fixtures = GetFixtures(_unitOfWork.Fixtures.GetAllFixtures())
                 }
             };
         }
