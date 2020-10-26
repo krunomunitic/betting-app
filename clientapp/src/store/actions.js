@@ -27,71 +27,24 @@ export const actions = {
         })
     },
     updateFixturesWithStatus({ commit, getters }, betOnFixture) {
-        const fixturesByCompetition = getters.fixturesByCompetition
+        const fixtures = getters.fixtures
 
-        const competition = fixturesByCompetition.find(competition =>
-            competition.competitionName === betOnFixture.competitionName)
-
-        if (!competition) {
-            console.log('error - No competition')
-            return;
-        }
-
-        const fixture = competition.fixtures.find(fixture =>
-            fixture.id === betOnFixture.fixtureId)
-
-        if (!fixture) {
-            console.log('error - No fixture')
-            return;
-        }
-
-        if (betOnFixture.oddsType && !betOnFixture.special) {
-            fixture.hasBet = true
-            for (const [oddsName, odds] of Object.entries(fixture.odds)) {
-                odds.betted = oddsName === betOnFixture.oddsType
+        fixtures.forEach(fixtureGroup => {
+            const fixture = fixtureGroup.fixtures.find(fixture => fixture.id === betOnFixture.fixtureId)
+            if (fixture) {
+                fixture.hasBet = false
+                for (const [oddsName, odds] of Object.entries(fixture.odds)) {
+                    if (betOnFixture.fixturesGroupName === fixtureGroup.name && oddsName == betOnFixture.oddsType) {
+                        odds.betted = true
+                        fixture.hasBet = true
+                    } else {
+                        odds.betted = false
+                    }
+                }
             }
-        } else {
-            fixture.hasBet = false
-            for (const odds of Object.entries(fixture.odds)) {
-                odds.betted = false
-            }
-        }
-        commit('SET_FIXTURES', { fixturesByCompetition })
+        })
 
-        // set for special fixtures
-
-        const fixturesByCompetitionSpecial = getters.fixturesByCompetitionSpecial
-
-        const competitionSpecial = fixturesByCompetitionSpecial.find(competition =>
-            competition.competitionName === betOnFixture.competitionName)
-
-        if (!competitionSpecial) {
-            console.log('error - no competition in special')
-            return;
-        }
-
-        const fixtureSpecial = competitionSpecial.fixtures.find(fixture =>
-            fixture.id === betOnFixture.fixtureId)
-
-        if (!fixtureSpecial) {
-            console.log('error - no fixture in special')
-            return;
-        }
-
-        if (betOnFixture.oddsType && betOnFixture.special) {
-            fixtureSpecial.hasBet = true
-            for (const [oddsName, odds] of Object.entries(fixtureSpecial.odds)) {
-                odds.betted = oddsName === betOnFixture.oddsType
-            }
-        } else {
-            fixtureSpecial.hasBet = false
-            for (const odds of Object.entries(fixtureSpecial.odds)) {
-                odds.betted = false
-            }
-        }
-
-        commit('SET_FIXTURES', { fixturesByCompetitionSpecial })
-
+        commit('SET_FIXTURES', fixtures)
     },
     addBet({ commit, getters }, bet) {
         const ticket = getters.ticket
@@ -104,7 +57,14 @@ export const actions = {
         if (betExist) {
             betExist.odds = bet.odds
             betExist.oddsType = bet.oddsType
-            betExist.special = bet.special
+            betExist.fixturesGroupName = bet.fixturesGroupName
+
+            // TODO: fix this hardcoded name
+            if (bet.fixturesGroupName === 'Special Offers') {
+                betExist.special = true
+            } else {
+                betExist.special = false
+            }
         } else {
             ticket.bets.push(bet)
         }

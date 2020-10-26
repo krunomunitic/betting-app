@@ -1,9 +1,6 @@
 ﻿export const mutations = {
     SET_FIXTURES(state, fixtures) {
-        // problem with re-rendering not triggered fix
-        if (fixtures && fixtures.length) {
-            state.fixtures = fixtures
-        }
+        state.fixtures = fixtures
     },
     SET_TICKET(state, ticket) {
         // problem with re-rendering not triggered fix

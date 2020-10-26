@@ -35,7 +35,6 @@ namespace BettingApp.Data
             {
                 new Competition { Name = "Premier League", SportId = sports.Single(s=> s.Name == "Football").Id },
                 new Competition { Name = "La Liga", SportId = sports.Single(s=> s.Name == "Football").Id },
-                new Competition { Name = "Seria A", SportId = sports.Single(s=> s.Name == "Football").Id },
                 new Competition { Name = "Champions League", SportId = sports.Single(s=> s.Name == "Football").Id },
                 new Competition { Name = "NBA", SportId = sports.Single(s=> s.Name == "Basketball").Id },
                 new Competition { Name = "Aba League", SportId = sports.Single(s=> s.Name == "Basketball").Id },
@@ -61,10 +60,6 @@ namespace BettingApp.Data
                 new Team { Name = "Villareal" },
                 new Team { Name = "Atletico Madrid" },
                 new Team { Name = "Sevilla" },
-                new Team { Name = "Juventus" },
-                new Team { Name = "Lazio" },
-                new Team { Name = "Inter" },
-                new Team { Name = "Milan" },
                 new Team { Name = "Bayern Munich" },
                 new Team { Name = "LA Lakers" },
                 new Team { Name = "Miami Heat" },
@@ -155,7 +150,7 @@ namespace BettingApp.Data
                 new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "Atletico Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Sevilla").Id,  CompetitionId =  competitions.Single(s=> s.Name == "La Liga").Id},
                 new Fixture { Date = DateTime.Parse("2020-11-13"), HomeTeamId = teams.Single(t=> t.Name == "LA Lakers").Id, AwayTeamId = teams.Single(t => t.Name == "Miami Heat").Id,  CompetitionId =  competitions.Single(s=> s.Name == "NBA").Id},
                 // TODO: set now minus few days, already played
-                new Fixture { Date = DateTime.Parse("2020-10-10"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id, Result = "1:3"},
+                new Fixture { Date = DateTime.Parse("2020-10-10"), HomeTeamId = teams.Single(t=> t.Name == "Real Madrid").Id, AwayTeamId = teams.Single(t => t.Name == "Bayern Munich").Id,  CompetitionId =  competitions.Single(s=> s.Name == "Champions League").Id},
             };
 
             foreach (Fixture fixture in fixtures)
