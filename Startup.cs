@@ -36,17 +36,21 @@ namespace betting_app
                 configuration.RootPath = "ClientApp";
             });
 
-            // Transient lifetime services are created each time they're requested from the service container
+            // TODO: investigate what is needed here
+            // Transient lifetime services are created each time
+            // they're requested from the service container
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IFixtureService, FixtureService>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IWalletService, WalletService>();
 
             var connectionString = Configuration.GetConnectionString("BettingApp");
-            services.AddDbContext<BettingAppContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BettingAppContext>(options => options
+                .UseSqlServer(connectionString));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime.
+        // Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

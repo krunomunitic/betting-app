@@ -4,6 +4,7 @@ import axios from 'axios';
 export const actions = {
     getFixtures({ commit }) {
         axios.get('/api/fixture').then(({ data }) => {
+            commit('SET_TICKET', {})
             commit('SET_FIXTURES', data)
         })
     },
